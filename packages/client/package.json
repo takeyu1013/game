@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build"
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "deploy": "bun run build && wrangler deploy"
   },
   "dependencies": {
     "@game/sim": "workspace:*",
@@ -13,7 +15,9 @@
     "spacetimedb": "2.8.*"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.13.0",
     "typescript": "~5.6.2",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "wrangler": "^4.28.0"
   }
 }

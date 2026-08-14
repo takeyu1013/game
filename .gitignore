@@ -1,4 +1,6 @@
 .devbox
 node_modules
 dist
+.wrangler
+.dev.vars*
 *.local.json
