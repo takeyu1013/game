@@ -1,6 +1,14 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "github:NixOS/nixpkgs/dfd83228ea899131ece39436f21b322f2a9cd436#oxfmt": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/dfd83228ea899131ece39436f21b322f2a9cd436#oxfmt"
+    },
+    "github:NixOS/nixpkgs/dfd83228ea899131ece39436f21b322f2a9cd436#oxlint": {
+      "last_modified": "1970-01-01T00:00:00Z",
+      "resolved": "github:NixOS/nixpkgs/dfd83228ea899131ece39436f21b322f2a9cd436#oxlint"
+    },
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
       "last_modified": "2026-08-06T00:10:29Z",
       "resolved": "github:NixOS/nixpkgs/70ce234312134a463ba7728e94da2486a1d237ac?lastModified=1785975029"
