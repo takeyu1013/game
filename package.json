@@ -4,9 +4,14 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",
-    "lint:fix": "oxlint --fix"
+    "lint:fix": "oxlint --fix",
+    "audit": "fallow audit",
+    "dead-code": "fallow dead-code",
+    "dupes": "fallow dupes",
+    "health": "fallow health"
   },
   "devDependencies": {
+    "fallow": "^3.16.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0"
   }

@@ -19,7 +19,19 @@
           {
             "type": "command",
             "if": "Bash(gh pr create*)",
-            "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null",
+            "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null; bunx fallow audit",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "if": "Bash(git commit*)",
+            "command": "bunx fallow audit",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "if": "Bash(git push*)",
+            "command": "bunx fallow audit",
             "timeout": 120
           }
         ]

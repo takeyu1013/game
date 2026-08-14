@@ -9,8 +9,13 @@
     ],
     "beforeShellExecution": [
       {
-        "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null; echo '{\"permission\":\"allow\"}'",
+        "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null; bunx fallow audit; echo '{\"permission\":\"allow\"}'",
         "matcher": "gh\\s+pr\\s+create",
+        "timeout": 120
+      },
+      {
+        "command": "bunx fallow audit; echo '{\"permission\":\"allow\"}'",
+        "matcher": "git\\s+(commit|push)",
         "timeout": 120
       }
     ]
