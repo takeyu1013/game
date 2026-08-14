@@ -1,0 +1,15 @@
+{
+  "filters": {
+    "comments": true
+  },
+  "rules": {
+    "ja-space-between-half-and-full-width": {
+      "space": "never",
+      "allows": ["/:\\s+/"]
+    },
+    "ja-space-around-code": {
+      "before": false,
+      "after": false
+    }
+  }
+}
