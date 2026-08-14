@@ -1,6 +1,6 @@
 import { Effect, ManagedRuntime } from "effect";
-import { WorldClient, WorldClientLive } from "./effect/WorldClient.ts";
-import { startGame } from "./game/WorldScene.ts";
+import { WorldClient, WorldClientLive } from "./effect/world-client.ts";
+import { startGame } from "./game/world-scene.ts";
 
 const runtime = ManagedRuntime.make(WorldClientLive);
 

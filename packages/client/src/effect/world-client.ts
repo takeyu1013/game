@@ -1,6 +1,6 @@
 import { Context, Data, Effect, Layer } from "effect";
 import { DbConnection, tables } from "../module_bindings/index.ts";
-import { loadAppConfig } from "./AppConfig.ts";
+import { loadAppConfig } from "./app-config.ts";
 
 export class WorldError extends Data.TaggedError("WorldError")<{
   readonly reason: string;

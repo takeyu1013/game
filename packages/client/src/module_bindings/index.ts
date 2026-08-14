@@ -34,12 +34,12 @@ import {
 } from "spacetimedb";
 
 // Import all reducer arg schemas
-import SetInputReducer from "./set_input_reducer";
+import SetInputReducer from "./set-input-reducer";
 
 // Import all procedure arg schemas
 
 // Import all table schema definitions
-import PlayerRow from "./player_table";
+import PlayerRow from "./player-table";
 
 /** Type-only namespace exports for generated type groups. */
 

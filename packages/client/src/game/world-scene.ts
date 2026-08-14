@@ -8,7 +8,7 @@ import {
   WORLD_WIDTH,
   MOVE_SPEED,
 } from "@game/sim";
-import type { PlayerSnapshot } from "../effect/WorldClient.ts";
+import type { PlayerSnapshot } from "../effect/world-client.ts";
 
 export type WorldHandle = {
   readonly players: () => ReadonlyMap<string, PlayerSnapshot>;
