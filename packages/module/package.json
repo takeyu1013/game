@@ -1,0 +1,16 @@
+{
+  "name": "@game/module",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "spacetime build",
+    "publish": "spacetime publish"
+  },
+  "dependencies": {
+    "@game/sim": "workspace:*",
+    "spacetimedb": "2.8.*"
+  },
+  "devDependencies": {
+    "typescript": "~5.6.2"
+  }
+}

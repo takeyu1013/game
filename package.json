@@ -1,10 +1,17 @@
 {
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
+    "dev": "bun run --filter @game/client dev",
+    "bindings": "spacetime generate --lang typescript --out-dir packages/client/src/module_bindings --module-path packages/module",
+    "module:publish": "spacetime publish --server local --yes game",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",
-    "lint:fix": "oxlint --fix"
+    "lint:fix": "oxlint --fix",
+    "test": "bun test packages/sim"
   },
   "devDependencies": {
     "oxfmt": "^0.63.0",
