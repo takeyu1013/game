@@ -1,12 +1,12 @@
 {
-  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.15.0/.schema/devbox.schema.json",
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/latest/.schema/devbox.schema.json",
   "packages": [
-    "github:NixOS/nixpkgs/dfd83228ea899131ece39436f21b322f2a9cd436#oxlint",
-    "github:NixOS/nixpkgs/dfd83228ea899131ece39436f21b322f2a9cd436#oxfmt"
+    "bun@latest",
+    "oxfmt@latest"
   ],
   "shell": {
     "init_hook": [
-      "echo 'Welcome to devbox!' > /dev/null"
+      "bun install"
     ],
     "scripts": {
       "test": [
