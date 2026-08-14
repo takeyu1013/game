@@ -94,7 +94,7 @@ export class WorldScene extends Phaser.Scene {
   }
 }
 
-export const startGame = (parent: string, world: WorldHandle): Phaser.Game =>
+export const startGame = (parent: HTMLElement, world: WorldHandle): Phaser.Game =>
   new Phaser.Game({
     type: Phaser.AUTO,
     parent,

@@ -4,6 +4,7 @@
 
 - 世界: SpacetimeDB（ローカルまたは Maincloud）
 - セッション: Effect 3
+- クライアント: React
 - 描画: Phaser 4
 - 配信: Cloudflare Workers（静的アセット）
 

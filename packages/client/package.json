@@ -12,10 +12,15 @@
     "@game/sim": "workspace:*",
     "effect": "^3.22.1",
     "phaser": "^4.2.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "spacetimedb": "2.8.*"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.13.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^4.7.0",
     "typescript": "~5.6.2",
     "vite": "^6.3.5",
     "wrangler": "^4.28.0"
