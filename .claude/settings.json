@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bunx oxfmt@latest </dev/null",
+            "command": "bunx oxfmt@latest </dev/null; bun run lint:text:fix </dev/null",
             "timeout": 60
           }
         ]
@@ -19,7 +19,7 @@
           {
             "type": "command",
             "if": "Bash(gh pr create*)",
-            "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null",
+            "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null; bun run lint:text:fix </dev/null",
             "timeout": 120
           }
         ]
