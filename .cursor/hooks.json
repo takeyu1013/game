@@ -3,12 +3,12 @@
   "hooks": {
     "afterFileEdit": [
       {
-        "command": ".cursor/hooks/oxc-format-markdown.sh"
+        "command": "bash -c 'f=$(jq -r \".file_path // empty\"); case \"$f\" in *.md|*.markdown|*.mdx) .devbox/nix/profile/default/bin/bun x oxfmt --write --no-error-on-unmatched-pattern \"$f\" >/dev/null 2>&1 || true ;; esac'"
       }
     ],
     "afterShellExecution": [
       {
-        "command": ".cursor/hooks/oxc-fix-on-pr.sh",
+        "command": "bash -c '.devbox/nix/profile/default/bin/bun x oxfmt --write --no-error-on-unmatched-pattern \"**/*.{md,markdown,mdx,js,jsx,ts,tsx,mjs,cjs,json,jsonc}\" >/dev/null 2>&1 || true; .devbox/nix/profile/default/bin/bun x oxlint --fix . >/dev/null 2>&1 || true'",
         "matcher": "gh\\s+pr\\s+create"
       }
     ]
