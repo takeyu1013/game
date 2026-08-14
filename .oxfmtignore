@@ -1,2 +1,2 @@
-packages/client/src/module_bindings
 bun.lock
+packages/client/src/module_bindings

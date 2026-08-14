@@ -1,6 +1,6 @@
 import { Effect, ManagedRuntime } from "effect";
 import { useEffect, useState } from "react";
-import { WorldClient, WorldClientLive } from "./effect/world-client.ts";
+import { WorldClient } from "./effect/world-client.ts";
 import { GameCanvas } from "./game/game-canvas.tsx";
 import type { WorldHandle } from "./game/world-scene.ts";
 
@@ -9,7 +9,7 @@ export const App = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const runtime = ManagedRuntime.make(WorldClientLive);
+    const runtime = ManagedRuntime.make(WorldClient.layer);
     let cancelled = false;
     const program = Effect.gen(function* () {
       const client = yield* WorldClient;

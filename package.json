@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "bun run --filter @game/client dev",
     "preview": "bun run --filter @game/client preview",
-    "deploy": "bun run --filter @game/client deploy",
-    "bindings": "spacetime generate --lang typescript --out-dir packages/client/src/module_bindings --module-path packages/module && bun scripts/kebab-case-bindings.ts",
+    "deploy": "alchemy deploy",
     "module:publish": "spacetime publish --server local --yes game",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
@@ -16,6 +15,10 @@
     "test": "bun test packages/sim"
   },
   "devDependencies": {
+    "@effect/platform-bun": "4.0.0-beta.105",
+    "@effect/platform-node": "4.0.0-beta.105",
+    "alchemy": "next",
+    "effect": "4.0.0-beta.105",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0"
   }

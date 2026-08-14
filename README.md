@@ -3,10 +3,12 @@
 直線の地面の上で、複数の矩形プレイヤーが左右に移動する単一世界です。
 
 - 世界: SpacetimeDB（ローカルまたは Maincloud）
-- セッション: Effect 3
+- セッション: Effect 4
 - クライアント: React
 - 描画: Phaser 4
-- 配信: Cloudflare Workers（静的アセット）
+- 配信: Cloudflare Workers（Alchemy）
+
+クライアントの SpacetimeDB スキーマは `packages/client/src/effect/db-connection.ts` に手書きしています。`spacetime generate` の生成物はコミットせず、もしローカルで出したとしてもケバブケースや lint の対象外です。
 
 ## 準備
 
@@ -19,7 +21,6 @@ spacetime start
 
 ```bash
 bun run module:publish
-bun run bindings
 bun run dev
 ```
 
@@ -29,10 +30,10 @@ bun run dev
 
 ## デプロイ
 
-クライアントは Cloudflare Workers に載せます。Pages は使いません。
+クライアントは Alchemy 経由で Cloudflare Workers に載せます。
 
 ```bash
 bun run deploy
 ```
 
-本番の SpacetimeDB 接続先はビルド時の `VITE_SPACETIMEDB_URI` と `VITE_SPACETIMEDB_MODULE` で渡します。
+本番の SpacetimeDB 接続先は `alchemy deploy` 時の `VITE_SPACETIMEDB_URI` と `VITE_SPACETIMEDB_MODULE` で渡します。
