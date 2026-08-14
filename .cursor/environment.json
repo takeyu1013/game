@@ -1,5 +1,4 @@
 {
   "name": "game",
-  "install": "bash .cursor/install.sh",
-  "start": "bash .cursor/start-nix-daemon.sh"
+  "install": "bash .cursor/install.sh"
 }
