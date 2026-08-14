@@ -52,44 +52,6 @@
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
       "last_modified": "2026-08-06T00:10:29Z",
       "resolved": "github:NixOS/nixpkgs/70ce234312134a463ba7728e94da2486a1d237ac?lastModified=1785975029"
-    },
-    "oxfmt@latest": {
-      "last_modified": "2026-08-05T07:53:23Z",
-      "resolved": "github:NixOS/nixpkgs/3a971fa2e67dcb0f2f2cfed2d37e7956567d73d1#oxfmt",
-      "source": "devbox-search",
-      "version": "0.61.0",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/1bbcs5qcfsws1al2qw4hjv9imzndx9v1-oxfmt-0.61.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/1bbcs5qcfsws1al2qw4hjv9imzndx9v1-oxfmt-0.61.0"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/9iipxhcgv66vxjckgn35r8cqswk4yvxr-oxfmt-0.61.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/9iipxhcgv66vxjckgn35r8cqswk4yvxr-oxfmt-0.61.0"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/n128wbk36mk1k1frv9z02mwfp6hqs6d3-oxfmt-0.61.0",
-              "default": true
-            }
-          ],
-          "store_path": "/nix/store/n128wbk36mk1k1frv9z02mwfp6hqs6d3-oxfmt-0.61.0"
-        }
-      }
     }
   }
 }
