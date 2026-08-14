@@ -1,17 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/latest/.schema/devbox.schema.json",
-  "packages": [
-    "bun@latest",
-    "oxfmt@latest"
-  ],
+  "packages": ["oxfmt@latest", "bun@latest"],
   "shell": {
-    "init_hook": [
-      "bun install"
-    ],
+    "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
     "scripts": {
-      "test": [
-        "echo \"Error: no test specified\" && exit 1"
-      ]
+      "test": ["echo \"Error: no test specified\" && exit 1"]
     }
   }
 }

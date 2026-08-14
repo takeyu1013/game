@@ -3,13 +3,15 @@
   "hooks": {
     "afterFileEdit": [
       {
-        "command": "bash -c 'f=$(jq -r \".file_path // empty\"); case \"$f\" in *.md|*.markdown|*.mdx) .devbox/nix/profile/default/bin/bun x oxfmt --write --no-error-on-unmatched-pattern \"$f\" >/dev/null 2>&1 || true ;; esac'"
+        "command": "bunx oxfmt@latest </dev/null",
+        "timeout": 60
       }
     ],
-    "afterShellExecution": [
+    "beforeShellExecution": [
       {
-        "command": "bash -c '.devbox/nix/profile/default/bin/bun x oxfmt --write --no-error-on-unmatched-pattern \"**/*.{md,markdown,mdx,js,jsx,ts,tsx,mjs,cjs,json,jsonc}\" >/dev/null 2>&1 || true; .devbox/nix/profile/default/bin/bun x oxlint --fix . >/dev/null 2>&1 || true'",
-        "matcher": "gh\\s+pr\\s+create"
+        "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null; echo '{\"permission\":\"allow\"}'",
+        "matcher": "gh\\s+pr\\s+create",
+        "timeout": 120
       }
     ]
   }
