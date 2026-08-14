@@ -1,0 +1,4 @@
+{
+  "name": "game",
+  "install": "bash .cursor/install.sh"
+}
