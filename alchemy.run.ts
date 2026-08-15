@@ -10,7 +10,6 @@ export default Alchemy.Stack(
   },
   Effect.gen(function* () {
     const web = yield* Cloudflare.Website.Vite("Website", {
-      rootDir: "./packages/client",
       assets: { notFoundHandling: "single-page-application" },
     });
     return { url: web.url };
