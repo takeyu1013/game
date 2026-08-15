@@ -3,13 +3,13 @@
   "hooks": {
     "afterFileEdit": [
       {
-        "command": "bunx oxfmt@latest </dev/null; bun run lint:text:fix </dev/null",
+        "command": "bun run hook:edit </dev/null",
         "timeout": 60
       }
     ],
     "beforeShellExecution": [
       {
-        "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null; bun run lint:text:fix </dev/null; bunx fallow; echo '{\"permission\":\"allow\"}'",
+        "command": "bun run hook:pr </dev/null; echo '{\"permission\":\"allow\"}'",
         "matcher": "gh\\s+pr\\s+create",
         "timeout": 120
       }
