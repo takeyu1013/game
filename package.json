@@ -6,9 +6,11 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "lint:text": "textlint \"**/*.md\"",
-    "lint:text:fix": "textlint --fix \"**/*.md\""
+    "lint:text:fix": "textlint --fix \"**/*.md\"",
+    "fallow": "fallow"
   },
   "devDependencies": {
+    "fallow": "^3.16.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",
     "textlint": "^15.8.0",
