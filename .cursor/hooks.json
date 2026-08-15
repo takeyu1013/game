@@ -1,12 +1,7 @@
 {
   "version": 1,
   "hooks": {
-    "afterFileEdit": [
-      {
-        "command": "bun run hook:edit </dev/null",
-        "timeout": 60
-      }
-    ],
+    "afterFileEdit": [{ "command": "bun run hook:edit </dev/null", "timeout": 60 }],
     "beforeShellExecution": [
       {
         "command": "bun run hook:pr </dev/null; echo '{\"permission\":\"allow\"}'",

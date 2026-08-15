@@ -3,13 +3,7 @@
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bun run hook:edit </dev/null",
-            "timeout": 60
-          }
-        ]
+        "hooks": [{ "type": "command", "command": "bun run hook:edit </dev/null", "timeout": 60 }]
       }
     ],
     "PreToolUse": [
