@@ -8,9 +8,7 @@
     "lint:text": "textlint \"**/*.md\"",
     "lint:text:fix": "textlint --fix \"**/*.md\"",
     "lint:pr": "textlint --stdin --stdin-filename pr.md",
-    "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow",
-    "hook:edit": "bun run fmt; bun run lint:text:fix",
-    "hook:pr": "bun run hook:edit; bun run lint:fix; fallow"
+    "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow"
   },
   "devDependencies": {
     "fallow": "^3.16.0",
