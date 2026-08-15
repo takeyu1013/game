@@ -8,18 +8,12 @@ import {
   WORLD_WIDTH,
   MOVE_SPEED,
 } from "@game/sim";
-import type { PlayerSnapshot } from "../effect/world-client.ts";
+import type { PlayerSnapshot } from "./world-client.ts";
 
 export type WorldHandle = {
   readonly players: () => ReadonlyMap<string, PlayerSnapshot>;
   readonly localId: () => string | undefined;
   readonly setInput: (left: boolean, right: boolean) => void;
-};
-
-const hsl = (hue: number): number => {
-  const color = new Phaser.Display.Color();
-  color.setFromHSV(hue / 360, 0.65, 0.95);
-  return color.color;
 };
 
 export class WorldScene extends Phaser.Scene {
@@ -51,12 +45,10 @@ export class WorldScene extends Phaser.Scene {
       this.lastRight = right;
       this.world.setInput(left, right);
     }
-
     const localId = this.world.localId();
     const dt = delta / 1000;
     const players = this.world.players();
     const seen = new Set<string>();
-
     for (const [id, player] of players) {
       seen.add(id);
       const sprite = this.sprites.get(id) ?? this.spawn(player);
@@ -72,7 +64,6 @@ export class WorldScene extends Phaser.Scene {
       }
       sprite.y = player.y;
     }
-
     for (const [id, sprite] of this.sprites) {
       if (!seen.has(id)) {
         sprite.destroy();
@@ -82,13 +73,9 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private spawn(player: PlayerSnapshot): Phaser.GameObjects.Rectangle {
-    const sprite = this.add.rectangle(
-      player.x,
-      player.y,
-      PLAYER_WIDTH,
-      PLAYER_HEIGHT,
-      hsl(player.hue),
-    );
+    const color = new Phaser.Display.Color();
+    color.setFromHSV(player.hue / 360, 0.65, 0.95);
+    const sprite = this.add.rectangle(player.x, player.y, PLAYER_WIDTH, PLAYER_HEIGHT, color.color);
     this.sprites.set(player.id, sprite);
     return sprite;
   }

@@ -1,6 +1,63 @@
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_SPACETIMEDB_URI?: string;
+  readonly VITE_SPACETIMEDB_MODULE?: string;
+}
+
 import { Context, Effect, Layer, Schema } from "effect";
-import { DbConnection, tables } from "./db-connection.ts";
-import { loadAppConfig } from "./app-config.ts";
+import {
+  DbConnectionBuilder,
+  DbConnectionImpl,
+  SubscriptionBuilderImpl,
+  makeQueryBuilder,
+  procedures,
+  reducerSchema,
+  reducers,
+  schema,
+  t,
+  table,
+  type DbConnectionConfig,
+  type RemoteModule,
+} from "spacetimedb";
+
+const tablesSchema = schema({
+  player: table(
+    { name: "player" },
+    t.row({
+      identity: t.identity().primaryKey(),
+      x: t.f32(),
+      y: t.f32(),
+      dir: t.i32(),
+      hue: t.u32(),
+      online: t.bool(),
+    }),
+  ),
+});
+const reducersSchema = reducers(reducerSchema("set_input", { left: t.bool(), right: t.bool() }));
+const proceduresSchema = procedures();
+const REMOTE_MODULE = {
+  versionInfo: { cliVersion: "2.8.1" as const },
+  tables: tablesSchema.schemaType.tables,
+  reducers: reducersSchema.reducersType.reducers,
+  ...proceduresSchema,
+} satisfies RemoteModule<
+  typeof tablesSchema.schemaType,
+  typeof reducersSchema.reducersType,
+  typeof proceduresSchema
+>;
+const tables = makeQueryBuilder(tablesSchema.schemaType);
+
+class DbConnection extends DbConnectionImpl<typeof REMOTE_MODULE> {
+  static builder = (): DbConnectionBuilder<DbConnection> =>
+    new DbConnectionBuilder(
+      REMOTE_MODULE,
+      (config: DbConnectionConfig<typeof REMOTE_MODULE>) => new DbConnection(config),
+    );
+
+  override subscriptionBuilder = (): SubscriptionBuilderImpl<typeof REMOTE_MODULE> =>
+    new SubscriptionBuilderImpl(this);
+}
 
 export class WorldError extends Schema.TaggedError<WorldError>()("WorldError", {
   reason: Schema.String,
@@ -29,7 +86,6 @@ export class WorldClient extends Context.Service<
       const players = new Map<string, PlayerSnapshot>();
       let localId: string | undefined;
       let connection: DbConnection | undefined;
-
       const snapshotFrom = (row: {
         identity: { toHexString(): string };
         x: number;
@@ -41,17 +97,15 @@ export class WorldClient extends Context.Service<
         y: row.y,
         hue: row.hue,
       });
-
       return WorldClient.of({
         players: () => players,
         localId: () => localId,
         connect: Effect.tryPromise({
           try: () =>
             new Promise<void>((resolve, reject) => {
-              const config = loadAppConfig();
               DbConnection.builder()
-                .withUri(config.uri)
-                .withDatabaseName(config.moduleName)
+                .withUri(import.meta.env.VITE_SPACETIMEDB_URI ?? "ws://127.0.0.1:3000")
+                .withDatabaseName(import.meta.env.VITE_SPACETIMEDB_MODULE ?? "game")
                 .withToken(localStorage.getItem("stdb_token") ?? undefined)
                 .onConnectError((_ctx, error) => {
                   reject(error);
