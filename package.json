@@ -5,10 +5,7 @@
     "fmt:check": "oxfmt --check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "audit": "fallow audit",
-    "dead-code": "fallow dead-code",
-    "dupes": "fallow dupes",
-    "health": "fallow health"
+    "fallow": "fallow"
   },
   "devDependencies": {
     "fallow": "^3.16.0",
