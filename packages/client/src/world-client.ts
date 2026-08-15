@@ -52,7 +52,7 @@ class DbConnection extends DbConnectionImpl<typeof REMOTE_MODULE> {
     new SubscriptionBuilderImpl(this);
 }
 
-export class WorldError extends Schema.TaggedError<WorldError>()("WorldError", {
+class WorldError extends Schema.TaggedError<WorldError>()("WorldError", {
   reason: Schema.String,
   cause: Schema.Unknown,
 }) {}

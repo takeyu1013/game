@@ -1,0 +1,19 @@
+{
+  "entry": ["alchemy.run.ts", "packages/sim/src/index.test.ts"],
+  "ignoreDependencies": [
+    "@effect/platform-bun",
+    "@effect/platform-node",
+    "textlint-filter-rule-comments",
+    "textlint-rule-ja-space-around-code",
+    "textlint-rule-ja-space-between-half-and-full-width"
+  ],
+  "health": {
+    "thresholdOverrides": [
+      {
+        "files": ["packages/client/src/world-scene.ts"],
+        "maxCrap": 80,
+        "reason": "Phaser game loop branches on local prediction vs remote interpolation"
+      }
+    ]
+  }
+}
