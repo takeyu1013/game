@@ -10,10 +10,12 @@
     "module:publish": "spacetime publish --server local --yes game",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "lint": "oxlint",
+    "lint": "oxlint --no-error-on-unmatched-pattern",
     "lint:fix": "oxlint --fix",
     "lint:text": "textlint \"**/*.md\"",
     "lint:text:fix": "textlint --fix \"**/*.md\"",
+    "lint:pr": "textlint --stdin --stdin-filename pr.md",
+    "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow",
     "test": "bun test packages/sim"
   },
   "devDependencies": {
@@ -21,6 +23,7 @@
     "@effect/platform-node": "4.0.0-beta.105",
     "alchemy": "next",
     "effect": "4.0.0-beta.105",
+    "fallow": "^3.16.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",
     "textlint": "^15.8.0",
