@@ -3,13 +3,7 @@
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bunx oxfmt@latest </dev/null; bun run lint:text:fix </dev/null",
-            "timeout": 60
-          }
-        ]
+        "hooks": [{ "type": "command", "command": "bun run hook:edit </dev/null", "timeout": 60 }]
       }
     ],
     "PreToolUse": [
@@ -19,7 +13,7 @@
           {
             "type": "command",
             "if": "Bash(gh pr create*)",
-            "command": "bunx oxfmt@latest </dev/null; bunx oxlint@latest --fix </dev/null; bun run lint:text:fix </dev/null; bunx fallow",
+            "command": "bun run hook:pr </dev/null",
             "timeout": 120
           }
         ]
