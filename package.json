@@ -3,9 +3,11 @@
   "workspaces": [
     "packages/*"
   ],
+  "type": "module",
   "scripts": {
     "dev": "bun run --filter @game/client dev",
     "preview": "bun run --filter @game/client preview",
+    "build": "bun run --filter @game/client build",
     "deploy": "alchemy deploy",
     "module:publish": "spacetime publish --server local --yes game",
     "fmt": "oxfmt",
@@ -15,13 +17,10 @@
     "lint:text": "textlint \"**/*.md\"",
     "lint:text:fix": "textlint --fix \"**/*.md\"",
     "lint:pr": "textlint --stdin --stdin-filename pr.md",
-    "build": "bun run --filter @game/client build",
     "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow && bun run build",
     "test": "bun test packages/sim"
   },
   "devDependencies": {
-    "@effect/platform-bun": "4.0.0-beta.105",
-    "@effect/platform-node": "4.0.0-beta.105",
     "alchemy": "next",
     "effect": "4.0.0-beta.105",
     "fallow": "^3.16.0",

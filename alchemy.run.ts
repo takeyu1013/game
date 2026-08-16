@@ -1,15 +1,15 @@
-import * as Alchemy from "alchemy";
-import * as Cloudflare from "alchemy/Cloudflare";
-import * as Effect from "effect/Effect";
+import { Stack } from "alchemy";
+import { Website, providers, state } from "alchemy/Cloudflare";
+import { gen } from "effect/Effect";
 
-export default Alchemy.Stack(
+export default Stack(
   "game",
   {
-    providers: Cloudflare.providers(),
-    state: Cloudflare.state(),
+    providers: providers(),
+    state: state(),
   },
-  Effect.gen(function* () {
-    const web = yield* Cloudflare.Website.Vite("Website", {
+  gen(function* () {
+    const web = yield* Website.Vite("Website", {
       rootDir: "./packages/client",
       assets: { notFoundHandling: "single-page-application" },
     });
