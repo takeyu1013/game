@@ -1,4 +1,4 @@
 {
   "entry": ["alchemy.run.ts", "spacetimedb/src/index.ts", "stacks/github.ts"],
-  "ignoreDependencies": ["@effect/platform-node"]
+  "ignoreDependencies": ["@effect/platform-bun", "@effect/platform-node"]
 }
