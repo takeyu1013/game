@@ -1,5 +1,5 @@
 {
-  "entry": ["alchemy.run.ts", "packages/sim/src/index.test.ts"],
+  "entry": ["alchemy.run.ts", "packages/sim/src/index.test.ts", "stacks/github.ts"],
   "ignoreDependencies": [
     "textlint-filter-rule-comments",
     "textlint-rule-ja-space-around-code",
