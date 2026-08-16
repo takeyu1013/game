@@ -1,7 +1,7 @@
 import { Effect, ManagedRuntime } from "effect";
 import { StrictMode, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { WorldClient } from "./world-client.ts";
+import { WorldClient, worldClientLayer } from "./world-client.ts";
 import { startGame, type WorldHandle } from "./world-scene.ts";
 
 const GameCanvas = ({ world }: { readonly world: WorldHandle }) => {
@@ -23,7 +23,7 @@ const App = () => {
   const [world, setWorld] = useState<WorldHandle | null>(null);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    const runtime = ManagedRuntime.make(WorldClient.layer);
+    const runtime = ManagedRuntime.make(worldClientLayer);
     let cancelled = false;
     runtime
       .runPromise(

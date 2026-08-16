@@ -16,50 +16,42 @@ export type WorldHandle = {
   readonly setInput: (left: boolean, right: boolean) => void;
 };
 
-class WorldScene extends Phaser.Scene {
-  private readonly sprites = new Map<string, Phaser.GameObjects.Rectangle>();
-  private lastLeft = false;
-  private lastRight = false;
-  private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+export const startGame = (parent: HTMLElement, world: WorldHandle): Phaser.Game => {
+  const sprites = new Map<string, Phaser.GameObjects.Rectangle>();
+  let lastLeft = false;
+  let lastRight = false;
+  let cursors: Phaser.Types.Input.Keyboard.CursorKeys | undefined;
 
-  constructor(private readonly world: WorldHandle) {
-    super("world");
-  }
-
-  create(): void {
-    this.add.rectangle(
-      WORLD_WIDTH / 2,
-      GROUND_Y + GROUND_HEIGHT / 2,
-      WORLD_WIDTH,
-      GROUND_HEIGHT,
-      0x4a7c4a,
+  const spawn = (scene: Phaser.Scene, player: PlayerSnapshot): Phaser.GameObjects.Rectangle => {
+    const color = new Phaser.Display.Color();
+    color.setFromHSV(player.hue / 360, 0.65, 0.95);
+    const sprite = scene.add.rectangle(
+      player.x,
+      player.y,
+      PLAYER_WIDTH,
+      PLAYER_HEIGHT,
+      color.color,
     );
-    this.cursors = this.input.keyboard?.createCursorKeys();
-  }
+    sprites.set(player.id, sprite);
+    return sprite;
+  };
 
-  update(_time: number, delta: number): void {
-    const left = this.cursors?.left.isDown ?? false;
-    const right = this.cursors?.right.isDown ?? false;
-    this.syncInput(left, right);
-    this.syncSprites(left, right, delta / 1000);
-  }
-
-  private syncInput(left: boolean, right: boolean): void {
-    if (left === this.lastLeft && right === this.lastRight) {
+  const syncInput = (left: boolean, right: boolean): void => {
+    if (left === lastLeft && right === lastRight) {
       return;
     }
-    this.lastLeft = left;
-    this.lastRight = right;
-    this.world.setInput(left, right);
-  }
+    lastLeft = left;
+    lastRight = right;
+    world.setInput(left, right);
+  };
 
-  private syncSprites(left: boolean, right: boolean, dt: number): void {
-    const localId = this.world.localId();
+  const syncSprites = (scene: Phaser.Scene, left: boolean, right: boolean, dt: number): void => {
+    const localId = world.localId();
     const predict = left !== right;
     const seen = new Set<string>();
-    for (const [id, player] of this.world.players()) {
+    for (const [id, player] of world.players()) {
       seen.add(id);
-      const sprite = this.sprites.get(id) ?? this.spawn(player);
+      const sprite = sprites.get(id) ?? spawn(scene, player);
       sprite.x =
         id === localId && predict
           ? Phaser.Math.Clamp(
@@ -70,29 +62,38 @@ class WorldScene extends Phaser.Scene {
           : Phaser.Math.Linear(sprite.x, player.x, 0.35);
       sprite.y = player.y;
     }
-    for (const [id, sprite] of this.sprites) {
+    for (const [id, sprite] of sprites) {
       if (!seen.has(id)) {
         sprite.destroy();
-        this.sprites.delete(id);
+        sprites.delete(id);
       }
     }
-  }
+  };
 
-  private spawn(player: PlayerSnapshot): Phaser.GameObjects.Rectangle {
-    const color = new Phaser.Display.Color();
-    color.setFromHSV(player.hue / 360, 0.65, 0.95);
-    const sprite = this.add.rectangle(player.x, player.y, PLAYER_WIDTH, PLAYER_HEIGHT, color.color);
-    this.sprites.set(player.id, sprite);
-    return sprite;
-  }
-}
-
-export const startGame = (parent: HTMLElement, world: WorldHandle): Phaser.Game =>
-  new Phaser.Game({
+  return new Phaser.Game({
     type: Phaser.AUTO,
     parent,
     width: WORLD_WIDTH,
     height: WORLD_HEIGHT,
     backgroundColor: "#1b1f24",
-    scene: [new WorldScene(world)],
+    scene: {
+      key: "world",
+      create() {
+        this.add.rectangle(
+          WORLD_WIDTH / 2,
+          GROUND_Y + GROUND_HEIGHT / 2,
+          WORLD_WIDTH,
+          GROUND_HEIGHT,
+          0x4a7c4a,
+        );
+        cursors = this.input.keyboard?.createCursorKeys();
+      },
+      update(_time: number, delta: number) {
+        const left = cursors?.left.isDown ?? false;
+        const right = cursors?.right.isDown ?? false;
+        syncInput(left, right);
+        syncSprites(this, left, right, delta / 1000);
+      },
+    },
   });
+};

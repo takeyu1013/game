@@ -15,7 +15,8 @@
     "lint:text": "textlint \"**/*.md\"",
     "lint:text:fix": "textlint --fix \"**/*.md\"",
     "lint:pr": "textlint --stdin --stdin-filename pr.md",
-    "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow",
+    "build": "bun run --filter @game/client build",
+    "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow && bun run build",
     "test": "bun test packages/sim"
   },
   "devDependencies": {
