@@ -1,6 +1,10 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "deploy": "alchemy deploy",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint --no-error-on-unmatched-pattern",
@@ -8,15 +12,19 @@
     "lint:text": "textlint \"**/*.md\"",
     "lint:text:fix": "textlint --fix \"**/*.md\"",
     "lint:pr": "textlint --stdin --stdin-filename pr.md",
-    "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow"
+    "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow && bun run build"
   },
   "devDependencies": {
+    "alchemy": "next",
+    "effect": "4.0.0-beta.105",
     "fallow": "^3.16.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",
     "textlint": "^15.8.0",
     "textlint-filter-rule-comments": "^1.3.0",
     "textlint-rule-ja-space-around-code": "^3.0.3",
-    "textlint-rule-ja-space-between-half-and-full-width": "^3.0.3"
+    "textlint-rule-ja-space-between-half-and-full-width": "^3.0.3",
+    "typescript": "^7.0.2",
+    "vite": "^7.1.5"
   }
 }
