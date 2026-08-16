@@ -10,6 +10,9 @@ import { gen } from "effect/Effect";
 import { mergeAll } from "effect/Layer";
 import { make } from "effect/Redacted";
 
+const owner = "takeyu1013" as const;
+const repository = "game" as const;
+
 export default Stack(
   "github",
   {
@@ -33,15 +36,14 @@ export default Stack(
     });
 
     yield* Secret("cf-api-token", {
-      owner: "takeyu1013",
-      repository: "game",
+      owner,
+      repository,
       name: "CLOUDFLARE_API_TOKEN",
       value: apiToken.value,
     });
-
     yield* Secret("cf-account-id", {
-      owner: "takeyu1013",
-      repository: "game",
+      owner,
+      repository,
       name: "CLOUDFLARE_ACCOUNT_ID",
       value: make(accountId),
     });
