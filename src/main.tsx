@@ -15,7 +15,7 @@ const tablesSchema = schema({});
 const reducersSchema = reducers();
 const proceduresSchema = procedures();
 const REMOTE_MODULE = {
-  versionInfo: { cliVersion: "2.8.1" as const },
+  versionInfo: { cliVersion: "2.8.1" },
   tables: tablesSchema.schemaType.tables,
   reducers: reducersSchema.reducersType.reducers,
   ...proceduresSchema,
