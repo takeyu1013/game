@@ -29,7 +29,7 @@ const createDbConnection = (config: DbConnectionConfig<typeof REMOTE_MODULE>) =>
   new DbConnectionImpl(config);
 
 const connectionBuilder = new DbConnectionBuilder(REMOTE_MODULE, createDbConnection)
-  .withUri(import.meta.env.VITE_SPACETIMEDB_URI ?? "ws://127.0.0.1:3000")
+  .withUri(import.meta.env.VITE_SPACETIMEDB_URI ?? "ws://localhost:3000")
   .withDatabaseName(import.meta.env.VITE_SPACETIMEDB_MODULE ?? "takeyu-game");
 
 const App = () => {

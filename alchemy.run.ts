@@ -5,9 +5,6 @@ import { interpolate } from "alchemy/Output";
 import { gen } from "effect/Effect";
 import { mergeAll } from "effect/Layer";
 
-const spacetimeDbUri = (stage: string) =>
-  stage === "prod" ? "https://maincloud.spacetimedb.com" : "ws://127.0.0.1:3000";
-
 export default Stack(
   "game",
   {
@@ -21,7 +18,7 @@ export default Stack(
       name: stage === "prod" ? "game" : undefined,
       assets: { notFoundHandling: "single-page-application" },
       env: {
-        VITE_SPACETIMEDB_URI: spacetimeDbUri(stage),
+        VITE_SPACETIMEDB_URI: "https://maincloud.spacetimedb.com",
       },
     });
     const github = yield* GitHubEnv;
