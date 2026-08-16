@@ -1,3 +1,3 @@
 {
-  "entry": ["alchemy.run.ts", "stacks/github.ts"]
+  "entry": ["alchemy.run.ts", "spacetimedb/src/index.ts", "stacks/github.ts"]
 }
