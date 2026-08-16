@@ -1,4 +1,5 @@
 {
+  "database": "game",
   "module-path": "./spacetimedb",
   "server": "local"
 }
