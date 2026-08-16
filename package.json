@@ -9,6 +9,7 @@
     "build": "tsc --noEmit && vite build",
     "deploy": "alchemy deploy",
     "spacetime:publish:local": "spacetime publish --module-path spacetimedb --server local",
+    "spacetime:publish": "spacetime publish --module-path spacetimedb --server maincloud",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint --no-error-on-unmatched-pattern",
