@@ -1,6 +1,6 @@
 # game
 
-Cloudflare WorkersへViteクライアントを配信します。ローカルではSpacetimeDBへ接続できます。
+Cloudflare WorkersへViteクライアントを配信します。ローカルではSpacetimeDBへ接続できます。`spacetime`は`devbox`で入ります。
 
 ```bash
 bun install
