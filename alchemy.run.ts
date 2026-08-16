@@ -1,4 +1,4 @@
-import { Stack } from "alchemy";
+import { Stack, Stage } from "alchemy";
 import { Website, providers as cloudflareProviders, state } from "alchemy/Cloudflare";
 import { Comment, GitHubEnv, providers as githubProviders } from "alchemy/GitHub";
 import { interpolate } from "alchemy/Output";
@@ -12,8 +12,11 @@ export default Stack(
     state: state(),
   },
   gen(function* () {
+    const stage = yield* Stage;
     const web = yield* Website.Vite("Website", {
       rootDir: "./packages/client",
+      // prodはworkers.devのホスト名を固定し、mainマージごとにURLが変わらないようにする
+      name: stage === "prod" ? "game" : undefined,
       assets: { notFoundHandling: "single-page-application" },
     });
     const github = yield* GitHubEnv;
