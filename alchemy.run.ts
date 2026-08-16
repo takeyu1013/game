@@ -5,6 +5,9 @@ import { interpolate } from "alchemy/Output";
 import { gen } from "effect/Effect";
 import { mergeAll } from "effect/Layer";
 
+const spacetimeModuleName = (stage: string) =>
+  stage === "prod" ? "takeyu-game" : `takeyu-game-${stage}`;
+
 export default Stack(
   "game",
   {
@@ -13,12 +16,14 @@ export default Stack(
   },
   gen(function* () {
     const stage = yield* Stage;
+    const spacetimeModule = spacetimeModuleName(stage);
     const web = yield* Website.Vite("Website", {
       // prodはworkers.devのホスト名を固定し、mainマージごとにURLが変わらないようにする
       name: stage === "prod" ? "game" : undefined,
       assets: { notFoundHandling: "single-page-application" },
       env: {
         VITE_SPACETIMEDB_URI: "https://maincloud.spacetimedb.com",
+        VITE_SPACETIMEDB_MODULE: spacetimeModule,
       },
     });
     const github = yield* GitHubEnv;
@@ -31,6 +36,8 @@ export default Stack(
           ## Preview Deployed
 
           **URL:** ${web.url}
+
+          **SpacetimeDB:** ${spacetimeModule}
 
           Built from commit ${github.sha.slice(0, 7)}
 

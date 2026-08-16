@@ -1,6 +1,6 @@
 # game
 
-Cloudflare WorkersへViteクライアントを配信します。ローカルではSpacetimeDBへ接続できます。`spacetime`は`devbox`で入ります。本番はMaincloudへ接続します。
+Cloudflare WorkersへViteクライアントを配信します。ローカルではSpacetimeDBへ接続できます。`spacetime`は`devbox`で入ります。本番はMaincloudへ接続します。GitHubのデプロイではクライアントとあわせてモジュールも公開します。
 
 ```bash
 bun install
@@ -21,4 +21,4 @@ spacetime login
 bun run spacetime:publish
 ```
 
-接続先は`VITE_SPACETIMEDB_URI`と`VITE_SPACETIMEDB_MODULE`です。デプロイは`bun run deploy`です。
+接続先は`VITE_SPACETIMEDB_URI`と`VITE_SPACETIMEDB_MODULE`です。デプロイは`bun run deploy`です。GitHub Actionsは`SPACETIMEDB_TOKEN`が必要です。値は`spacetime login show --token`です。prodは`takeyu-game`、PRは`takeyu-game-pr-<番号>`です。
