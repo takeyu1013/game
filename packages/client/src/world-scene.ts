@@ -78,7 +78,7 @@ export const startGame = (parent: HTMLElement, world: WorldHandle): Phaser.Game 
     backgroundColor: "#1b1f24",
     scene: {
       key: "world",
-      create() {
+      create(this: Phaser.Scene) {
         this.add.rectangle(
           WORLD_WIDTH / 2,
           GROUND_Y + GROUND_HEIGHT / 2,
@@ -88,7 +88,7 @@ export const startGame = (parent: HTMLElement, world: WorldHandle): Phaser.Game 
         );
         cursors = this.input.keyboard?.createCursorKeys();
       },
-      update(_time: number, delta: number) {
+      update(this: Phaser.Scene, _time: number, delta: number) {
         const left = cursors?.left.isDown ?? false;
         const right = cursors?.right.isDown ?? false;
         syncInput(left, right);

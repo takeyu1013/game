@@ -62,14 +62,14 @@ export type PlayerSnapshot = {
   readonly hue: number;
 };
 
-export type WorldClient = {
+type WorldClientShape = {
   readonly players: () => ReadonlyMap<string, PlayerSnapshot>;
   readonly localId: () => string | undefined;
   readonly connect: Effect.Effect<void, Error>;
   readonly setInput: (left: boolean, right: boolean) => Effect.Effect<void, Error>;
 };
 
-export const WorldClient = Context.Service<WorldClient>("WorldClient");
+export const WorldClient = Context.Service<WorldClientShape>("WorldClient");
 
 export const worldClientLayer = Layer.effect(
   WorldClient,
