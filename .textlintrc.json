@@ -5,7 +5,7 @@
   "rules": {
     "ja-space-between-half-and-full-width": {
       "space": "never",
-      "allows": ["/:\\s+/"]
+      "allows": ["/:\\s+/", "/#\\d+\\s+/"]
     },
     "ja-space-around-code": {
       "before": false,
