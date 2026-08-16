@@ -17,6 +17,9 @@ export default Stack(
       // prodはworkers.devのホスト名を固定し、mainマージごとにURLが変わらないようにする
       name: stage === "prod" ? "game" : undefined,
       assets: { notFoundHandling: "single-page-application" },
+      env: {
+        VITE_SPACETIMEDB_URI: "https://maincloud.spacetimedb.com",
+      },
     });
     const github = yield* GitHubEnv;
     if (github?.pr) {
