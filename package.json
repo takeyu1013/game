@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "deploy": "alchemy deploy",
-    "module:publish": "spacetime publish --server local --yes game",
+    "spacetime:publish:local": "spacetime publish --server local --yes game",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint --no-error-on-unmatched-pattern",

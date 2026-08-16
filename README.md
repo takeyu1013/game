@@ -10,7 +10,7 @@ spacetime start
 別ターミナル:
 
 ```bash
-bun run module:publish
+bun run spacetime:publish:local
 bun run dev
 ```
 
