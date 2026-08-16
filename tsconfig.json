@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext", "DOM"],
-    "isolatedModules": true,
     "jsx": "react-jsx",
-    "noEmit": true
-  },
-  "include": ["src"]
+    "skipLibCheck": true,
+    "types": ["vite/client"]
+  }
 }

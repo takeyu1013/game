@@ -1,10 +1,14 @@
 {
   "private": true,
+  "workspaces": [
+    "spacetimedb"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "deploy": "alchemy deploy",
+    "spacetime:publish:local": "spacetime publish --module-path spacetimedb --server local",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint --no-error-on-unmatched-pattern",
@@ -16,9 +20,12 @@
   },
   "dependencies": {
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "spacetimedb": "2.8.*"
   },
   "devDependencies": {
+    "@effect/platform-bun": "4.0.0-beta.105",
+    "@effect/platform-node": "4.0.0-beta.105",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.4",

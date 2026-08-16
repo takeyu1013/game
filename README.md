@@ -1,10 +1,17 @@
 # game
 
-Cloudflare WorkersへViteクライアントを配信します。
+Cloudflare WorkersへViteクライアントを配信します。ローカルではSpacetimeDBへ接続できます。
 
 ```bash
 bun install
-bun run deploy
+spacetime start
 ```
 
-ローカル確認は`bun run dev`です。
+別ターミナル:
+
+```bash
+bun run spacetime:publish:local
+bun run dev
+```
+
+接続先は`VITE_SPACETIMEDB_URI`と`VITE_SPACETIMEDB_MODULE`です。デプロイは`bun run deploy`です。
