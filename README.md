@@ -25,6 +25,8 @@ GitHubシークレットの反映:
 
 ```bash
 spacetime login
-export SPACETIMEDB_TOKEN="$(spacetime login show --token | awk '/Your auth token/{print $NF}')"
-bun alchemy deploy stacks/github.ts
+spacetime login show --token
+SPACETIMEDB_TOKEN='<token>' bun alchemy deploy stacks/github.ts
 ```
+
+`<token>`は`Your auth token (don't share this!) is`のあとの値です。
