@@ -35,7 +35,9 @@ jobs:
         env:
           SPACETIMEDB_TOKEN: ${{ secrets.SPACETIMEDB_TOKEN }}
         run: |
-          spacetime login --token "$SPACETIMEDB_TOKEN"
+          TOKEN=$(printf '%s\n' "$SPACETIMEDB_TOKEN" | awk '/Your auth token/{print $NF; found=1} {line=$0} END{if (!found) print line}')
+          TOKEN=$(printf '%s' "$TOKEN" | tr -d '\r\n')
+          spacetime login --token "$TOKEN"
           bun run spacetime:publish
       - name: Deploy
         run: bun alchemy deploy --stage ${{ env.STAGE }} --yes

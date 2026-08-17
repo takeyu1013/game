@@ -9,10 +9,15 @@ import { Secret, providers as githubProviders } from "alchemy/GitHub";
 import { redacted } from "effect/Config";
 import { gen } from "effect/Effect";
 import { mergeAll } from "effect/Layer";
-import { make } from "effect/Redacted";
+import { make, value as reveal } from "effect/Redacted";
 
 const owner = "takeyu1013" as const;
 const repository = "game" as const;
+
+const spacetimeAuthToken = (raw: string) => {
+  const match = /Your auth token \(don't share this!\) is\s+(\S+)/.exec(raw);
+  return (match?.[1] ?? raw).replace(/[\r\n]/g, "").trim();
+};
 
 export default Stack(
   "github",
@@ -53,7 +58,7 @@ export default Stack(
       owner,
       repository,
       name: "SPACETIMEDB_TOKEN",
-      value: spacetimeToken,
+      value: make(spacetimeAuthToken(reveal(spacetimeToken))),
     });
   }),
 );
