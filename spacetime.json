@@ -1,4 +1,5 @@
 {
+  "database": "takeyu-game",
   "module-path": "./packages/module",
   "server": "local"
 }

@@ -1,6 +1,13 @@
 {
-  "entry": ["alchemy.run.ts", "packages/sim/src/index.test.ts", "stacks/github.ts"],
+  "entry": [
+    "alchemy.run.ts",
+    "packages/sim/src/index.test.ts",
+    "packages/module/src/index.ts",
+    "stacks/github.ts"
+  ],
   "ignoreDependencies": [
+    "@effect/platform-bun",
+    "@effect/platform-node",
     "textlint-filter-rule-comments",
     "textlint-rule-ja-space-around-code",
     "textlint-rule-ja-space-between-half-and-full-width"

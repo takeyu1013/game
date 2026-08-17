@@ -8,8 +8,10 @@
     "dev": "bun run --filter @game/client dev",
     "preview": "bun run --filter @game/client preview",
     "build": "bun run --filter @game/client build",
-    "deploy": "alchemy deploy",
-    "module:publish": "spacetime publish --server local --yes game",
+    "deploy": "bun run spacetime:publish && alchemy deploy",
+    "module:publish": "bun run spacetime:publish:local",
+    "spacetime:publish:local": "spacetime publish --module-path packages/module --server local --yes",
+    "spacetime:publish": "spacetime publish --module-path packages/module --server maincloud --yes",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint --no-error-on-unmatched-pattern",
@@ -25,6 +27,8 @@
     "effect": "4.0.0-beta.105"
   },
   "devDependencies": {
+    "@effect/platform-bun": "4.0.0-beta.105",
+    "@effect/platform-node": "4.0.0-beta.105",
     "fallow": "^3.16.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",

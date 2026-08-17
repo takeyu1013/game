@@ -7,6 +7,8 @@
 - クライアント: React, Phaser 4
 - 配信: Cloudflare Workers（Alchemy）
 
+`spacetime`は`devbox`で入ります。本番はMaincloudへ接続します。GitHubのデプロイではクライアントとあわせてモジュールも公開します。
+
 ```bash
 bun install
 spacetime start
@@ -15,8 +17,25 @@ spacetime start
 別ターミナル:
 
 ```bash
-bun run module:publish
+bun run spacetime:publish:local
 bun run dev
 ```
 
-矢印キー左右で移動します。接続先は`VITE_SPACETIMEDB_URI`と`VITE_SPACETIMEDB_MODULE`です。デプロイは`bun run deploy`です。
+矢印キー左右で移動します。接続先は`VITE_SPACETIMEDB_URI`と`VITE_SPACETIMEDB_MODULE`です。
+
+本番向けの公開:
+
+```bash
+spacetime login
+bun run spacetime:publish
+```
+
+GitHubシークレットの反映:
+
+```bash
+spacetime login
+spacetime login show --token
+SPACETIMEDB_TOKEN='<token>' bun alchemy deploy stacks/github.ts
+```
+
+`<token>`は`Your auth token (don't share this!) is`のあとの値です。
