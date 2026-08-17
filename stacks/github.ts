@@ -6,6 +6,7 @@ import {
   state,
 } from "alchemy/Cloudflare";
 import { Secret, providers as githubProviders } from "alchemy/GitHub";
+import { redacted } from "effect/Config";
 import { gen } from "effect/Effect";
 import { mergeAll } from "effect/Layer";
 import { make } from "effect/Redacted";
@@ -46,6 +47,13 @@ export default Stack(
       repository,
       name: "CLOUDFLARE_ACCOUNT_ID",
       value: make(accountId),
+    });
+    const spacetimeToken = yield* redacted("SPACETIMEDB_TOKEN");
+    yield* Secret("spacetimedb-token", {
+      owner,
+      repository,
+      name: "SPACETIMEDB_TOKEN",
+      value: spacetimeToken,
     });
   }),
 );

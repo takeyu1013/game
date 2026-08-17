@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "deploy": "alchemy deploy",
+    "deploy": "bun run spacetime:publish && alchemy deploy",
     "spacetime:publish:local": "spacetime publish --module-path spacetimedb --server local",
-    "spacetime:publish": "spacetime publish --module-path spacetimedb --server maincloud",
+    "spacetime:publish": "spacetime publish --module-path spacetimedb --server maincloud --yes",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "lint": "oxlint --no-error-on-unmatched-pattern",
