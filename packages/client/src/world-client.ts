@@ -96,7 +96,7 @@ export const worldClientLayer = Layer.effect(
           new Promise<void>((resolve, reject) => {
             dbConnectionBuilder()
               .withUri(import.meta.env.VITE_SPACETIMEDB_URI ?? "ws://127.0.0.1:3000")
-                .withDatabaseName(import.meta.env.VITE_SPACETIMEDB_MODULE ?? "takeyu-game")
+              .withDatabaseName(import.meta.env.VITE_SPACETIMEDB_MODULE ?? "takeyu-game")
               .withToken(localStorage.getItem("stdb_token") ?? undefined)
               .onConnectError((_ctx, error) => {
                 reject(error);
