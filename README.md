@@ -21,4 +21,10 @@ spacetime login
 bun run spacetime:publish
 ```
 
-接続先は`VITE_SPACETIMEDB_URI`と`VITE_SPACETIMEDB_MODULE`です。デプロイは`bun run deploy`です。GitHub Actionsは公式の`spacetime`導入と`spacetime login --token`で`takeyu-game`へ公開します。`SPACETIMEDB_TOKEN`は`stacks/github.ts`でGitHubへ書き込みます。値は`spacetime login show --token`です。githubスタックのデプロイ時に環境変数として渡します。
+GitHubシークレットの反映:
+
+```bash
+spacetime login
+export SPACETIMEDB_TOKEN="$(spacetime login show --token)"
+bun alchemy deploy stacks/github.ts
+```
