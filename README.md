@@ -14,6 +14,8 @@ bun run spacetime:publish:local
 bun run dev
 ```
 
+モジュールを変えたあとは`bun run spacetime:generate`で`src/module_bindings`を更新します。`spacetime:publish:local`でも生成します。
+
 本番向けの公開:
 
 ```bash
