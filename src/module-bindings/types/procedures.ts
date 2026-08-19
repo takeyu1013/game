@@ -5,4 +5,6 @@
 /* tslint:disable */
 import { type Infer as __Infer } from "spacetimedb";
 
-// Import all reducer arg schemas
+// Import all procedure arg schemas
+
+

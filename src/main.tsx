@@ -1,8 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { SpacetimeDBProvider, useSpacetimeDB, useTable } from "spacetimedb/react";
-import { DbConnection, tables } from "./module_bindings";
-import type { Player } from "./module_bindings/types";
+import { DbConnection, tables } from "./module-bindings";
+import type { Player } from "./module-bindings/types";
 
 const connectionBuilder = DbConnection.builder()
   .withUri(import.meta.env.VITE_SPACETIMEDB_URI ?? "ws://localhost:3000")

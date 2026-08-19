@@ -1,5 +1,5 @@
 {
   "entry": ["alchemy.run.ts", "spacetimedb/src/index.ts", "stacks/github.ts"],
-  "ignorePatterns": ["src/module_bindings/**"],
+  "ignorePatterns": ["src/module-bindings/**"],
   "ignoreDependencies": ["@effect/platform-bun", "@effect/platform-node"]
 }

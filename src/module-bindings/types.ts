@@ -16,3 +16,4 @@ export const Player = __t.object("Player", {
   y: __t.f32(),
 });
 export type Player = __Infer<typeof Player>;
+

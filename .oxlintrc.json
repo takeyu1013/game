@@ -1,5 +1,5 @@
 {
-  "ignorePatterns": ["src/module_bindings"],
+  "ignorePatterns": ["src/module-bindings"],
   "rules": {
     "max-classes-per-file": ["error", 0]
   }

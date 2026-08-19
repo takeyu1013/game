@@ -1,5 +1,11 @@
 {
   "database": "takeyu-game",
   "module-path": "./spacetimedb",
-  "server": "local"
+  "server": "local",
+  "generate": [
+    {
+      "language": "typescript",
+      "out-dir": "./src/module-bindings"
+    }
+  ]
 }
