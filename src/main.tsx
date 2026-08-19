@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { SpacetimeDBProvider, useSpacetimeDB, useTable } from "spacetimedb/react";
+import { GameCanvas } from "./game-canvas";
 import { DbConnection, tables } from "./module-bindings";
 import type { Player } from "./module-bindings/types";
 
@@ -45,7 +46,12 @@ const App = () => {
   if (!isActive || !identity) {
     return "接続中...";
   }
-  return <PresenceView identity={identity} players={players} ready={playersReady} />;
+  return (
+    <div>
+      <GameCanvas identity={identity} players={players} />
+      <PresenceView identity={identity} players={players} ready={playersReady} />
+    </div>
+  );
 };
 
 createRoot(document.getElementById("root")!).render(
