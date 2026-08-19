@@ -1,4 +1,5 @@
 import { schema, t, table } from "spacetimedb/server";
+import { nextSpawnX, SPAWN_Y } from "./layout";
 
 const player = table(
   { name: "player", public: true },
@@ -15,7 +16,11 @@ export const connected = spacetimedb.clientConnected((ctx) => {
   if (ctx.db.player.identity.find(ctx.sender) !== null) {
     return;
   }
-  ctx.db.player.insert({ identity: ctx.sender, x: 0, y: 0 });
+  ctx.db.player.insert({
+    identity: ctx.sender,
+    x: nextSpawnX(ctx.db.player),
+    y: SPAWN_Y,
+  });
 });
 
 export const disconnected = spacetimedb.clientDisconnected((ctx) => {
