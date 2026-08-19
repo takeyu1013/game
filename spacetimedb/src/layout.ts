@@ -8,13 +8,7 @@ const SPAWN_ORIGIN_X = 48;
 const SPAWN_SPACING_X = PLAYER_WIDTH + 16;
 export const SPAWN_Y = GROUND_Y - PLAYER_HEIGHT;
 
-export const nextSpawnX = (players: Iterable<{ x: number }>) => {
-  let nextX = SPAWN_ORIGIN_X;
-  for (const row of players) {
-    const candidate = row.x + SPAWN_SPACING_X;
-    if (candidate > nextX) {
-      nextX = candidate;
-    }
-  }
-  return nextX;
-};
+export const nextSpawnX = (players: Iterable<{ x: number }>) =>
+  [...players]
+    .map((row) => row.x + SPAWN_SPACING_X)
+    .reduce((nextX, candidate) => Math.max(nextX, candidate), SPAWN_ORIGIN_X);
