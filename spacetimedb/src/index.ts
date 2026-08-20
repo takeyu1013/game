@@ -1,4 +1,4 @@
-import { ScheduleAt, schema, SenderError, t, table } from "spacetimedb/server";
+import { ScheduleAt, schema, t, table } from "spacetimedb/server";
 import { nextSpawnX, nextX, SPAWN_Y, TICK_INTERVAL_MICROS } from "./layout";
 
 const player = table(
@@ -78,9 +78,6 @@ export const tick = spacetimedb.reducer(
   { onSchedule: tickSchedule },
   { tickSchedule: tickSchedule.rowType },
   (ctx) => {
-    if (!ctx.senderAuth.isInternal) {
-      throw new SenderError("tick is internal");
-    }
     for (const row of ctx.db.player) {
       const x = nextX(row.x, row.left, row.right);
       if (x === row.x) {
