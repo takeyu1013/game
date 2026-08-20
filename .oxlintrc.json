@@ -1,6 +1,26 @@
 {
   "ignorePatterns": ["src/module-bindings"],
   "rules": {
-    "max-classes-per-file": ["error", 0]
+    "max-classes-per-file": ["error", 0],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "react",
+            "importNames": ["useEffect"],
+            "message": "useEffectの使用は禁止です"
+          }
+        ]
+      }
+    ],
+    "no-restricted-properties": [
+      "error",
+      {
+        "object": "React",
+        "property": "useEffect",
+        "message": "useEffectの使用は禁止です"
+      }
+    ]
   }
 }
