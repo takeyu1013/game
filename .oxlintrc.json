@@ -1,6 +1,8 @@
 {
   "ignorePatterns": ["src/module-bindings"],
+  "jsPlugins": ["./oxlint-plugin-no-for.js"],
   "rules": {
-    "max-classes-per-file": ["error", 0]
+    "max-classes-per-file": ["error", 0],
+    "no-for/no-for": "error"
   }
 }
