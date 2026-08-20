@@ -6,5 +6,7 @@
 import { type Infer as __Infer } from "spacetimedb";
 
 // Import all reducer arg schemas
+import SetInputReducer from "../set_input_reducer";
 
+export type SetInputParams = __Infer<typeof SetInputReducer>;
 

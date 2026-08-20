@@ -14,6 +14,14 @@ export const Player = __t.object("Player", {
   identity: __t.identity(),
   x: __t.f32(),
   y: __t.f32(),
+  left: __t.bool(),
+  right: __t.bool(),
 });
 export type Player = __Infer<typeof Player>;
+
+export const TickSchedule = __t.object("TickSchedule", {
+  scheduledId: __t.u64(),
+  scheduledAt: __t.scheduleAt(),
+});
+export type TickSchedule = __Infer<typeof TickSchedule>;
 
