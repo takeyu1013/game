@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { SpacetimeDBProvider, useSpacetimeDB, useTable } from "spacetimedb/react";
+import { GameCanvas } from "./game-canvas";
 import { DbConnection, tables } from "./module-bindings";
 import type { Player } from "./module-bindings/types";
 
@@ -22,6 +23,7 @@ const PresenceView = ({
   }
   return (
     <div>
+      <GameCanvas identity={identity} players={players} />
       <p>{`接続しました: ${identity.toHexString()}`}</p>
       <p>{`在席: ${players.length}人`}</p>
       <ul>

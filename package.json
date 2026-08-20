@@ -21,8 +21,10 @@
     "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow && bun run build"
   },
   "dependencies": {
+    "konva": "^10.3.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-konva": "^19.2.5",
     "spacetimedb": "2.8.*"
   },
   "devDependencies": {
