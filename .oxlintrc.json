@@ -9,7 +9,14 @@
       "ForInStatement",
       "ForOfStatement",
       "ThrowStatement",
-      "TSAsExpression"
+      {
+        "selector": "TSAsExpression[typeAnnotation.typeName.name!='const']",
+        "message": "asによる型アサーションは禁止です"
+      },
+      {
+        "selector": "VariableDeclaration[kind='const'] > VariableDeclarator:matches([init.type='Literal'], [init.type='ObjectExpression'], [init.type='ArrayExpression'], [init.type='TemplateLiteral'][init.expressions.length=0], [init.type='UnaryExpression'][init.argument.type='Literal'])",
+        "message": "定数にはas constが必要です"
+      }
     ],
     "no-restricted-imports": [
       "error",

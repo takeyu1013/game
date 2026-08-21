@@ -1,10 +1,10 @@
-export const VIEW_WIDTH = 800;
-export const VIEW_HEIGHT = 450;
-export const GROUND_HEIGHT = 48;
+export const VIEW_WIDTH = 800 as const;
+export const VIEW_HEIGHT = 450 as const;
+export const GROUND_HEIGHT = 48 as const;
 export const GROUND_Y = VIEW_HEIGHT - GROUND_HEIGHT;
-export const PLAYER_WIDTH = 32;
-export const PLAYER_HEIGHT = 48;
-const SPAWN_ORIGIN_X = 48;
+export const PLAYER_WIDTH = 32 as const;
+export const PLAYER_HEIGHT = 48 as const;
+const SPAWN_ORIGIN_X = 48 as const;
 const SPAWN_SPACING_X = PLAYER_WIDTH + 16;
 export const SPAWN_Y = GROUND_Y - PLAYER_HEIGHT;
 
