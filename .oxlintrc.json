@@ -9,6 +9,42 @@
     "functional/no-classes": "error",
     "functional/no-loop-statements": "error",
     "functional/no-throw-statements": "error",
+    "functional/no-try-statements": "error",
+    "oxc/no-async-await": "error",
+    "no-restricted-globals": [
+      "error",
+      {
+        "globals": [
+          {
+            "name": "Promise",
+            "message": "Promiseの使用は禁止です。Effectを使ってください"
+          },
+          {
+            "name": "fetch",
+            "message": "fetchの使用は禁止です。EffectのHttpClientを使ってください"
+          }
+        ],
+        "checkGlobalObject": true
+      }
+    ],
+    "no-restricted-properties": [
+      "error",
+      {
+        "object": "process",
+        "property": "env",
+        "message": "process.envの使用は禁止です。effect/Configを使ってください"
+      }
+    ],
+    "typescript/no-restricted-types": [
+      "error",
+      {
+        "types": {
+          "Promise": {
+            "message": "Promiseの使用は禁止です。Effectを使ってください"
+          }
+        }
+      }
+    ],
     "typescript/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
     "eslint-js/no-restricted-syntax": [
       "error",
@@ -30,6 +66,15 @@
             "name": "react",
             "importNames": ["default"],
             "message": "React.によるアクセスは禁止です"
+          },
+          {
+            "name": "effect",
+            "message": "effect直下からのimportは禁止です。effect/Effectなどのサブモジュールからimportしてください"
+          },
+          {
+            "name": "effect/Effect",
+            "importNames": ["promise"],
+            "message": "promiseの使用は禁止です。tryPromiseを使ってください"
           }
         ]
       }
