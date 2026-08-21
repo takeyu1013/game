@@ -11,8 +11,8 @@ import { gen } from "effect/Effect";
 import { mergeAll } from "effect/Layer";
 import { make } from "effect/Redacted";
 
-const owner = "takeyu1013" as const;
-const repository = "game" as const;
+const owner = "takeyu1013";
+const repository = "game";
 
 export default Stack(
   "github",

@@ -8,7 +8,8 @@
       "ForStatement",
       "ForInStatement",
       "ForOfStatement",
-      "ThrowStatement"
+      "ThrowStatement",
+      "TSAsExpression"
     ],
     "no-restricted-imports": [
       "error",
