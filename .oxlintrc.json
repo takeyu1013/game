@@ -1,8 +1,13 @@
 {
   "ignorePatterns": ["src/module-bindings"],
-  "jsPlugins": ["./oxlint-plugin-no-for.js"],
+  "jsPlugins": [{ "name": "eslint-js", "specifier": "oxlint-plugin-eslint" }],
   "rules": {
     "max-classes-per-file": ["error", 0],
-    "no-for/no-for": "error"
+    "eslint-js/no-restricted-syntax": [
+      "error",
+      "ForStatement",
+      "ForInStatement",
+      "ForOfStatement"
+    ]
   }
 }
