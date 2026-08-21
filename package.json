@@ -19,7 +19,7 @@
     "lint:text:fix": "textlint --fix \"**/*.md\"",
     "lint:pr": "textlint --stdin --stdin-filename pr.md",
     "postinstall": "bun install --cwd tooling/eslint-plugin-functional --frozen-lockfile",
-    "test": "bun spacetimedb/src/layout.ts",
+    "test": "bun src/layout.test.ts",
     "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow && bun run test && bun run build"
   },
   "dependencies": {

@@ -1,4 +1,8 @@
-import { Effect, Fiber, Stream } from "effect";
+import { runFork, sync } from "effect/Effect";
+import { interrupt } from "effect/Fiber";
+import { match } from "effect/Option";
+import { decodeUnknownOption, instanceOf, Literals } from "effect/Schema";
+import { type EventListener, fromEventListener, mergeAll, runForEach } from "effect/Stream";
 
 const SIDES = {
   ArrowLeft: "left",
@@ -7,34 +11,51 @@ const SIDES = {
   KeyD: "right",
 } as const;
 
-const listen = (type: string) =>
-  Stream.fromEventListener(window as Stream.EventListener<Event>, type);
+const KeyCode = Literals(["ArrowLeft", "KeyA", "ArrowRight", "KeyD"]);
+
+const windowEvents = (): EventListener<Event> => ({
+  addEventListener: (type, listener, options) => {
+    window.addEventListener(type, listener, options);
+  },
+  removeEventListener: (type, listener, options) => {
+    window.removeEventListener(type, listener, options);
+  },
+});
+
+const listen = (type: string) => fromEventListener(windowEvents(), type);
 
 export const bindPlayerInput = (setInput: (held: { left: boolean; right: boolean }) => unknown) => {
-  const held = { left: false, right: false };
-  const fiber = Effect.runFork(
-    Stream.runForEach(
-      Stream.mergeAll([listen("keydown"), listen("keyup"), listen("blur")], {
-        concurrency: "unbounded",
-      }),
+  let held = { left: false, right: false };
+  const fiber = runFork(
+    runForEach(
+      mergeAll([listen("keydown"), listen("keyup"), listen("blur")], { concurrency: "unbounded" }),
       (event) =>
-        Effect.sync(() => {
-          const key = event as KeyboardEvent;
-          const side = SIDES[key.code as keyof typeof SIDES];
+        sync(() => {
           if (event.type === "blur") {
-            held.left = false;
-            held.right = false;
-          } else if (side !== undefined && !key.repeat) {
-            key.preventDefault();
-            held[side] = key.type === "keydown";
-          } else {
+            held = { left: false, right: false };
+            void setInput({ ...held });
             return;
           }
-          void setInput({ ...held });
+          match(decodeUnknownOption(instanceOf(KeyboardEvent))(event), {
+            onNone: () => undefined,
+            onSome: (key) => {
+              match(decodeUnknownOption(KeyCode)(key.code), {
+                onNone: () => undefined,
+                onSome: (code) => {
+                  if (key.repeat) {
+                    return;
+                  }
+                  key.preventDefault();
+                  held = { ...held, [SIDES[code]]: key.type === "keydown" };
+                  void setInput({ ...held });
+                },
+              });
+            },
+          });
         }),
     ),
   );
   return () => {
-    Effect.runFork(Fiber.interrupt(fiber));
+    runFork(interrupt(fiber));
   };
 };
