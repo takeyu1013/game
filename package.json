@@ -35,6 +35,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "alchemy": "next",
     "effect": "4.0.0-beta.105",
+    "eslint-plugin-fp": "^2.3.0",
     "fallow": "^3.16.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",
