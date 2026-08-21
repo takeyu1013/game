@@ -3,7 +3,13 @@
   "jsPlugins": [{ "name": "eslint-js", "specifier": "oxlint-plugin-eslint" }],
   "rules": {
     "max-classes-per-file": ["error", 0],
-    "eslint-js/no-restricted-syntax": ["error", "ForStatement", "ForInStatement", "ForOfStatement", "ThrowStatement"],
+    "eslint-js/no-restricted-syntax": [
+      "error",
+      "ForStatement",
+      "ForInStatement",
+      "ForOfStatement",
+      "ThrowStatement"
+    ],
     "no-restricted-imports": [
       "error",
       {
