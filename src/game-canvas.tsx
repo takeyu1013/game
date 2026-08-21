@@ -1,4 +1,5 @@
-import kaplay from "kaplay";
+import { Application, extend } from "@pixi/react";
+import { Graphics } from "pixi.js";
 import { useCallback, useRef } from "react";
 import { useReducer } from "spacetimedb/react";
 import {
@@ -13,16 +14,18 @@ import { reducers } from "./module-bindings";
 import type { Player } from "./module-bindings/types";
 import { bindPlayerInput } from "./player-input";
 
+extend({ Graphics });
+
 const SKY_COLOR = "#9ec9e8" as const;
 const GROUND_COLOR = "#6b8f3c" as const;
 const GROUND_LINE_COLOR = "#3f5c22" as const;
 const SELF_COLOR = "#e15b4c" as const;
 const OTHER_COLOR = "#3d5c80" as const;
 
-type Live = {
-  identity: Player["identity"];
-  players: readonly Player[];
-  setInput: (input: { left: boolean; right: boolean }) => unknown;
+const rect = (color: string, width: number, height: number) => (g: Graphics) => {
+  g.clear();
+  g.rect(0, 0, width, height);
+  g.fill(color);
 };
 
 export const GameCanvas = ({
@@ -33,52 +36,37 @@ export const GameCanvas = ({
   players: readonly Player[];
 }) => {
   const setInput = useReducer(reducers.setInput);
-  const live = useRef<Live>({ identity, players, setInput });
-  live.current = { identity, players, setInput };
-
-  const rootRef = useCallback((root: HTMLDivElement | null) => {
-    if (!root) {
+  const latest = useRef(setInput);
+  latest.current = setInput;
+  const inputRef = useCallback((node: HTMLDivElement | null) => {
+    if (!node) {
       return;
     }
-    const k = kaplay({
-      root,
-      width: VIEW_WIDTH,
-      height: VIEW_HEIGHT,
-      global: false,
-      background: SKY_COLOR,
-      debug: false,
-      loadingScreen: false,
-      buttons: {
-        left: { keyboard: ["left", "a"] },
-        right: { keyboard: ["right", "d"] },
-      },
-    });
-    bindPlayerInput(k, (input) => live.current.setInput(input));
-    k.onDraw(() => {
-      const { identity: self, players: rows } = live.current;
-      k.drawRect({
-        pos: k.vec2(0, GROUND_Y),
-        width: VIEW_WIDTH,
-        height: GROUND_HEIGHT,
-        color: k.Color.fromHex(GROUND_COLOR),
-      });
-      k.drawLine({
-        p1: k.vec2(0, GROUND_Y),
-        p2: k.vec2(VIEW_WIDTH, GROUND_Y),
-        width: 2,
-        color: k.Color.fromHex(GROUND_LINE_COLOR),
-      });
-      rows.forEach((player) => {
-        k.drawRect({
-          pos: k.vec2(player.x, player.y),
-          width: PLAYER_WIDTH,
-          height: PLAYER_HEIGHT,
-          color: k.Color.fromHex(player.identity.isEqual(self) ? SELF_COLOR : OTHER_COLOR),
-        });
-      });
-    });
-    return () => k.quit();
+    return bindPlayerInput((held) => latest.current(held));
   }, []);
-
-  return <div ref={rootRef} />;
+  return (
+    <div ref={inputRef}>
+      <Application
+        width={VIEW_WIDTH}
+        height={VIEW_HEIGHT}
+        background={SKY_COLOR}
+        preference="webgl"
+      >
+        <pixiGraphics y={GROUND_Y} draw={rect(GROUND_COLOR, VIEW_WIDTH, GROUND_HEIGHT)} />
+        <pixiGraphics y={GROUND_Y} draw={rect(GROUND_LINE_COLOR, VIEW_WIDTH, 2)} />
+        {players.map((player) => (
+          <pixiGraphics
+            key={player.identity.toHexString()}
+            x={player.x}
+            y={player.y}
+            draw={rect(
+              player.identity.isEqual(identity) ? SELF_COLOR : OTHER_COLOR,
+              PLAYER_WIDTH,
+              PLAYER_HEIGHT,
+            )}
+          />
+        ))}
+      </Application>
+    </div>
+  );
 };

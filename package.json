@@ -23,8 +23,9 @@
     "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow && bun run test && bun run build"
   },
   "dependencies": {
+    "@pixi/react": "^8.0.5",
     "effect": "4.0.0-beta.107",
-    "kaplay": "^3001.0.19",
+    "pixi.js": "^8.20.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "spacetimedb": "^2.8.2"

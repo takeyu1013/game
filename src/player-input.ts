@@ -1,18 +1,40 @@
-import type { KAPLAYCtx } from "kaplay";
+import { Effect, Fiber, Stream } from "effect";
 
-const released = { left: false, right: false };
+const SIDES = {
+  ArrowLeft: "left",
+  KeyA: "left",
+  ArrowRight: "right",
+  KeyD: "right",
+} as const;
 
-export const bindPlayerInput = (
-  k: KAPLAYCtx,
-  setInput: (input: { left: boolean; right: boolean }) => unknown,
-) => {
-  const send = () =>
-    void setInput({
-      left: k.isButtonDown("left"),
-      right: k.isButtonDown("right"),
-    });
-  k.onButtonPress(["left", "right"], send);
-  k.onButtonRelease(["left", "right"], send);
-  k.onHide(() => void setInput(released));
-  k.canvas.addEventListener("blur", () => void setInput(released));
+const listen = (type: string) =>
+  Stream.fromEventListener(window as Stream.EventListener<Event>, type);
+
+export const bindPlayerInput = (setInput: (held: { left: boolean; right: boolean }) => unknown) => {
+  const held = { left: false, right: false };
+  const fiber = Effect.runFork(
+    Stream.runForEach(
+      Stream.mergeAll([listen("keydown"), listen("keyup"), listen("blur")], {
+        concurrency: "unbounded",
+      }),
+      (event) =>
+        Effect.sync(() => {
+          const key = event as KeyboardEvent;
+          const side = SIDES[key.code as keyof typeof SIDES];
+          if (event.type === "blur") {
+            held.left = false;
+            held.right = false;
+          } else if (side !== undefined && !key.repeat) {
+            key.preventDefault();
+            held[side] = key.type === "keydown";
+          } else {
+            return;
+          }
+          void setInput({ ...held });
+        }),
+    ),
+  );
+  return () => {
+    Effect.runFork(Fiber.interrupt(fiber));
+  };
 };
