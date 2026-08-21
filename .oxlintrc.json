@@ -1,8 +1,10 @@
 {
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
   "ignorePatterns": ["src/module-bindings"],
   "jsPlugins": [{ "name": "eslint-js", "specifier": "oxlint-plugin-eslint" }],
   "rules": {
     "max-classes-per-file": ["error", 0],
+    "typescript/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
     "eslint-js/no-restricted-syntax": [
       "error",
       "ForStatement",
@@ -10,11 +12,7 @@
       "ForOfStatement",
       "ThrowStatement",
       {
-        "selector": "TSAsExpression[typeAnnotation.typeName.name!='const']",
-        "message": "asによる型アサーションは禁止です"
-      },
-      {
-        "selector": "VariableDeclaration[kind='const'] > VariableDeclarator:matches([init.type='Literal'], [init.type='ObjectExpression'], [init.type='ArrayExpression'], [init.type='TemplateLiteral'][init.expressions.length=0], [init.type='UnaryExpression'][init.argument.type='Literal'])",
+        "selector": "VariableDeclaration[kind='const'] > VariableDeclarator[init.type=/Literal|ObjectExpression|ArrayExpression/]",
         "message": "定数にはas constが必要です"
       }
     ],
