@@ -39,11 +39,11 @@ if (bunMain?.endsWith("/layout.ts") === true) {
     { name: "左端近くで左", x: 5, left: true, right: false, expected: MIN_X },
     { name: "右端近くで右", x: MAX_X - 5, left: false, right: true, expected: MAX_X },
   ];
-  for (const row of cases) {
+  cases.forEach((row) => {
     const actual = nextX(row.x, row.left, row.right);
     if (actual !== row.expected) {
       throw new Error(`${row.name}: ${actual} !== ${row.expected}`);
     }
-  }
+  });
   console.log("layout tests ok");
 }

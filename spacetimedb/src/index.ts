@@ -78,13 +78,13 @@ export const tick = spacetimedb.reducer(
   { onSchedule: tickSchedule },
   { tickSchedule: tickSchedule.rowType },
   (ctx) => {
-    for (const row of ctx.db.player) {
+    [...ctx.db.player].forEach((row) => {
       const x = nextX(row.x, row.left, row.right);
       if (x === row.x) {
-        continue;
+        return;
       }
       ctx.db.player.identity.update({ ...row, x });
-    }
+    });
   },
 );
 

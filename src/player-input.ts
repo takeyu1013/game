@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef, type KeyboardEvent } from "react";
 import { useReducer } from "spacetimedb/react";
 import { reducers } from "./module-bindings";
 
@@ -24,36 +24,34 @@ const released = { left: false, right: false };
 export const usePlayerInput = () => {
   const setInput = useReducer(reducers.setInput);
   const held = useRef(released);
+  const root = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const send = (next: Held) => {
-      held.current = next;
-      void setInput(next);
-    };
-    const onKey = (event: KeyboardEvent, pressed: boolean) => {
-      if (KEY_SIDE[event.code] !== undefined) {
-        event.preventDefault();
-      }
-      const next = nextHeld(held.current, event.code, pressed, event.repeat);
-      if (next !== null) {
-        send(next);
-      }
-    };
-    const onDown = (event: KeyboardEvent) => onKey(event, true);
-    const onUp = (event: KeyboardEvent) => onKey(event, false);
-    const onBlur = () => {
+  const send = (next: Held) => {
+    held.current = next;
+    void setInput(next);
+  };
+
+  const onKey = (event: KeyboardEvent<HTMLDivElement>, pressed: boolean) => {
+    if (KEY_SIDE[event.code] !== undefined) {
+      event.preventDefault();
+    }
+    const next = nextHeld(held.current, event.code, pressed, event.repeat);
+    if (next !== null) {
+      send(next);
+    }
+  };
+
+  return {
+    ref: root,
+    tabIndex: 0,
+    autoFocus: true,
+    onClick: () => root.current?.focus(),
+    onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => onKey(event, true),
+    onKeyUp: (event: KeyboardEvent<HTMLDivElement>) => onKey(event, false),
+    onBlur: () => {
       if (held.current.left || held.current.right) {
         send(released);
       }
-    };
-    window.addEventListener("keydown", onDown);
-    window.addEventListener("keyup", onUp);
-    window.addEventListener("blur", onBlur);
-    return () => {
-      window.removeEventListener("keydown", onDown);
-      window.removeEventListener("keyup", onUp);
-      window.removeEventListener("blur", onBlur);
-      onBlur();
-    };
-  }, [setInput]);
+    },
+  };
 };
