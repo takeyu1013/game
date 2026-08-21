@@ -1,9 +1,9 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": ["src/module-bindings", "vendor"],
+  "ignorePatterns": ["src/module-bindings"],
   "jsPlugins": [
     { "name": "eslint-js", "specifier": "oxlint-plugin-eslint" },
-    { "name": "functional", "specifier": "@oxlint-plugins/oxlint-plugin-functional" }
+    { "name": "functional", "specifier": "./plugins/oxlint-plugin-functional.js" }
   ],
   "rules": {
     "functional/no-classes": "error",

@@ -30,7 +30,6 @@
   "devDependencies": {
     "@effect/platform-bun": "4.0.0-beta.105",
     "@effect/platform-node": "4.0.0-beta.105",
-    "@oxlint-plugins/oxlint-plugin-functional": "file:vendor/oxlint-plugin-functional",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.4",
