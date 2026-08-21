@@ -10,16 +10,13 @@
             "name": "react",
             "importNames": ["useEffect"],
             "message": "useEffectの使用は禁止です"
+          },
+          {
+            "name": "react",
+            "importNames": ["default"],
+            "message": "React.によるアクセスは禁止です"
           }
         ]
-      }
-    ],
-    "no-restricted-properties": [
-      "error",
-      {
-        "object": "React",
-        "property": "useEffect",
-        "message": "useEffectの使用は禁止です"
       }
     ]
   }
