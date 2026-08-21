@@ -27,8 +27,8 @@ export const clampX = (x: number) => Math.min(Math.max(x, MIN_X), MAX_X);
 export const nextX = (x: number, left: boolean, right: boolean) =>
   clampX(x + moveDirection(left, right) * MOVE_SPEED * TICK_DT);
 
-const bunMain = (globalThis as { Bun?: { main?: string } }).Bun?.main?.replaceAll("\\", "/");
-if (bunMain?.endsWith("/layout.ts") === true) {
+const bun = (globalThis as { Bun?: { main?: string; exit: (code: number) => void } }).Bun;
+if (bun?.main?.endsWith("/layout.ts") === true) {
   const cases = [
     { name: "左端で左", x: MIN_X, left: true, right: false, expected: MIN_X },
     { name: "右端で右", x: MAX_X, left: false, right: true, expected: MAX_X },
@@ -39,11 +39,13 @@ if (bunMain?.endsWith("/layout.ts") === true) {
     { name: "左端近くで左", x: 5, left: true, right: false, expected: MIN_X },
     { name: "右端近くで右", x: MAX_X - 5, left: false, right: true, expected: MAX_X },
   ];
-  cases.forEach((row) => {
+  const failed = cases.flatMap((row) => {
     const actual = nextX(row.x, row.left, row.right);
-    if (actual !== row.expected) {
-      throw new Error(`${row.name}: ${actual} !== ${row.expected}`);
-    }
+    return actual === row.expected ? [] : [`${row.name}: ${actual} !== ${row.expected}`];
   });
+  if (failed.length > 0) {
+    console.error(failed.join("\n"));
+    bun.exit(1);
+  }
   console.log("layout tests ok");
 }
