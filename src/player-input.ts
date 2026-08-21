@@ -1,8 +1,18 @@
-import { runFork, sync } from "effect/Effect";
+import { fn, runFork, sync } from "effect/Effect";
 import { interrupt } from "effect/Fiber";
-import { match } from "effect/Option";
+import { fromPredicateOption } from "effect/Filter";
+import { exhaustive, value, when } from "effect/Match";
+import { filter, flatMap, map } from "effect/Option";
+import { type Ref, make, updateAndGet } from "effect/Ref";
 import { decodeUnknownOption, instanceOf, Literals } from "effect/Schema";
-import { type EventListener, fromEventListener, mergeAll, runForEach } from "effect/Stream";
+import {
+  type EventListener,
+  filterMap,
+  fromEventListener,
+  map as mapStream,
+  mergeAll,
+  runForEach,
+} from "effect/Stream";
 
 const SIDES = {
   ArrowLeft: "left",
@@ -12,6 +22,20 @@ const SIDES = {
 } as const;
 
 const KeyCode = Literals(["ArrowLeft", "KeyA", "ArrowRight", "KeyD"]);
+
+type Held = {
+  readonly left: boolean;
+  readonly right: boolean;
+};
+
+type KeyMessage = {
+  readonly kind: "key";
+  readonly code: keyof typeof SIDES;
+  readonly down: boolean;
+  readonly event: KeyboardEvent;
+};
+
+type InputMessage = KeyMessage | { readonly kind: "blur" };
 
 const windowEvents = (): EventListener<Event> => ({
   addEventListener: (type, listener, options) => {
@@ -24,37 +48,57 @@ const windowEvents = (): EventListener<Event> => ({
 
 const listen = (type: string) => fromEventListener(windowEvents(), type);
 
-export const bindPlayerInput = (setInput: (held: { left: boolean; right: boolean }) => unknown) => {
-  let held = { left: false, right: false };
-  const fiber = runFork(
-    runForEach(
-      mergeAll([listen("keydown"), listen("keyup"), listen("blur")], { concurrency: "unbounded" }),
-      (event) =>
-        sync(() => {
-          if (event.type === "blur") {
-            held = { left: false, right: false };
-            void setInput({ ...held });
-            return;
-          }
-          match(decodeUnknownOption(instanceOf(KeyboardEvent))(event), {
-            onNone: () => undefined,
-            onSome: (key) => {
-              match(decodeUnknownOption(KeyCode)(key.code), {
-                onNone: () => undefined,
-                onSome: (code) => {
-                  if (key.repeat) {
-                    return;
-                  }
-                  key.preventDefault();
-                  held = { ...held, [SIDES[code]]: key.type === "keydown" };
-                  void setInput({ ...held });
-                },
-              });
-            },
-          });
-        }),
-    ),
+const asKeyMessage = fromPredicateOption((event: Event) =>
+  flatMap(
+    filter(decodeUnknownOption(instanceOf(KeyboardEvent))(event), (key) => !key.repeat),
+    (key) =>
+      map(decodeUnknownOption(KeyCode)(key.code), (code) => ({
+        kind: "key" as const,
+        code,
+        down: key.type === "keydown",
+        event: key,
+      })),
+  ),
+);
+
+const applyMessage = (held: Held, message: InputMessage): Held =>
+  value(message).pipe(
+    when({ kind: "blur" }, () => ({ left: false, right: false })),
+    when({ kind: "key" }, (key) => ({ ...held, [SIDES[key.code]]: key.down })),
+    exhaustive,
   );
+
+const handleInput = fn("handleInput")(function* (
+  held: Ref<Held>,
+  setInput: (state: Held) => unknown,
+  message: InputMessage,
+) {
+  const next = yield* updateAndGet(held, (current) => applyMessage(current, message));
+  yield* sync(() => {
+    if (message.kind === "key") {
+      message.event.preventDefault();
+    }
+    setInput(next);
+  });
+});
+
+const listenPlayerInput = fn("listenPlayerInput")(function* (setInput: (state: Held) => unknown) {
+  const held = yield* make<Held>({ left: false, right: false });
+  yield* runForEach(
+    mergeAll(
+      [
+        filterMap(listen("keydown"), asKeyMessage),
+        filterMap(listen("keyup"), asKeyMessage),
+        mapStream(listen("blur"), (): InputMessage => ({ kind: "blur" })),
+      ],
+      { concurrency: "unbounded" },
+    ),
+    (message) => handleInput(held, setInput, message),
+  );
+});
+
+export const bindPlayerInput = (setInput: (held: Held) => unknown) => {
+  const fiber = runFork(listenPlayerInput(setInput));
   return () => {
     runFork(interrupt(fiber));
   };

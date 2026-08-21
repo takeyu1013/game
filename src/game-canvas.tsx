@@ -1,4 +1,5 @@
 import { Application, extend } from "@pixi/react";
+import { fromNullishOr, match } from "effect/Option";
 import { Graphics } from "pixi.js";
 import { useCallback, useRef } from "react";
 import { useReducer } from "spacetimedb/react";
@@ -38,12 +39,14 @@ export const GameCanvas = ({
   const setInput = useReducer(reducers.setInput);
   const latest = useRef(setInput);
   latest.current = setInput;
-  const inputRef = useCallback((node: HTMLDivElement | null) => {
-    if (!node) {
-      return;
-    }
-    return bindPlayerInput((held) => latest.current(held));
-  }, []);
+  const inputRef = useCallback(
+    (node: HTMLDivElement | null) =>
+      match(fromNullishOr(node), {
+        onNone: () => undefined,
+        onSome: () => bindPlayerInput((held) => latest.current(held)),
+      }),
+    [],
+  );
   return (
     <div ref={inputRef}>
       <Application

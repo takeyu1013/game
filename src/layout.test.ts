@@ -1,3 +1,5 @@
+import { log } from "effect/Console";
+import { fail, fn, forEach, runSync } from "effect/Effect";
 import { PLAYER_WIDTH, VIEW_WIDTH, nextX } from "../spacetimedb/src/layout";
 
 const MIN_X = 0 as const;
@@ -14,13 +16,17 @@ const cases = [
   { name: "右端近くで右", x: MAX_X - 5, left: false, right: true, expected: MAX_X },
 ] as const;
 
-const failed = cases.flatMap((row) => {
+const expectNextX = fn("expectNextX")(function* (row: (typeof cases)[number]) {
   const actual = nextX(row.x, row.left, row.right);
-  return actual === row.expected ? [] : [`${row.name}: ${actual} !== ${row.expected}`];
+  if (actual === row.expected) {
+    return;
+  }
+  return yield* fail(`${row.name}: ${actual} !== ${row.expected}`);
 });
 
-if (failed.length > 0) {
-  console.error(failed.join("\n"));
-  process.exit(1);
-}
-console.log("layout tests ok");
+const runLayoutTests = fn("runLayoutTests")(function* () {
+  yield* forEach(cases, expectNextX, { discard: true });
+  yield* log("layout tests ok");
+});
+
+runSync(runLayoutTests());
