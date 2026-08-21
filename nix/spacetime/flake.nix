@@ -6,23 +6,23 @@
   outputs =
     { nixpkgs, ... }:
     let
-      version = "2.8.1";
+      version = "2.8.2";
       sources = {
         x86_64-linux = {
           url = "https://github.com/clockworklabs/SpacetimeDB/releases/download/v${version}/spacetime-x86_64-unknown-linux-gnu.tar.gz";
-          hash = "sha256-TsPnaTQgNexbsbglLWJTb2bkMM98mJxoPRI6TpxZ97A=";
+          hash = "sha256-Th9yZMJzDVwH59IBr68/tRSFncNp5JFvB9gAOWSDPwg=";
         };
         aarch64-linux = {
           url = "https://github.com/clockworklabs/SpacetimeDB/releases/download/v${version}/spacetime-aarch64-unknown-linux-gnu.tar.gz";
-          hash = "sha256-2Gi2krrXVtihoNyzKaf2t087+/Fz1k5aASzhUz+XcJs=";
+          hash = "sha256-C7ydLDc+DJOdsWE5YQtzYMCWWdJAgYwmBgT/our61R0=";
         };
         aarch64-darwin = {
           url = "https://github.com/clockworklabs/SpacetimeDB/releases/download/v${version}/spacetime-aarch64-apple-darwin.tar.gz";
-          hash = "sha256-XaF7NpUjwi0arlwit81QzSNAFTj+AjMfeiFtMkRztnk=";
+          hash = "sha256-P8H2i+215f5S2QpUtfcRIRQNd6SoXV9upyO/4+XY+18=";
         };
         x86_64-darwin = {
           url = "https://github.com/clockworklabs/SpacetimeDB/releases/download/v${version}/spacetime-x86_64-apple-darwin.tar.gz";
-          hash = "sha256-iVhcnFi+qC8slN0dGotK3WLUE0f6hpnf4xZI6iMhL5A=";
+          hash = "sha256-iJ4PpXMtGdYR3cGET4EB9EeorgAUabzFcteY+5IQpAQ=";
         };
       };
       mkSpacetime =
