@@ -1,0 +1,72 @@
+{
+  "name": "@oxlint-plugins/oxlint-plugin-functional",
+  "version": "0.0.0",
+  "description": "Rust-backed Oxlint plugin port of eslint-plugin-functional.",
+  "keywords": [
+    "eslint-plugin",
+    "functional",
+    "napi-rs",
+    "oxlint",
+    "oxlint-plugin",
+    "rust"
+  ],
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "@ubugeeei",
+      "url": "https://github.com/ubugeeei"
+    },
+    {
+      "name": "@baseballyama",
+      "url": "https://github.com/baseballyama"
+    },
+    {
+      "name": "Blacksmith",
+      "url": "https://www.blacksmith.sh/"
+    },
+    {
+      "name": "OpenAI",
+      "url": "https://openai.com/"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ubugeeei-prod/oxlint-plugins.git",
+    "directory": "npm/functional"
+  },
+  "files": [
+    "index.js",
+    "api.js",
+    "api.d.ts",
+    "native.js",
+    "native.d.ts",
+    "*.node",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "index.js",
+  "types": "api.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "default": "./index.js"
+    },
+    "./api": {
+      "types": "./api.d.ts",
+      "require": "./api.js",
+      "default": "./api.js"
+    },
+    "./native": {
+      "types": "./native.d.ts",
+      "require": "./native.js",
+      "default": "./native.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@oxlint/plugins": "1.79.0"
+  }
+}
