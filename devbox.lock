@@ -53,9 +53,43 @@
       "last_modified": "2026-08-19T20:44:59Z",
       "resolved": "github:NixOS/nixpkgs/07e1d92cdc0ed416cfa11ff3ca40d17e61cfba7a?lastModified=1787172299&narHash=sha256-PShzS87awOlE5XWkxUGBd%2F58%2FF%2BAtE2ZMgFffKj4r8s%3D"
     },
-    "path:./nix/spacetime": {
-      "last_modified": "2026-08-21T14:25:02Z",
-      "resolved": "path:/workspace/nix/spacetime?lastModified=1787322302&narHash=sha256-zwAvZW1HIygUVj%2BA9BO3s9Y3nkU1gG09jEIBwf%2B1veU%3D"
+    "spacetimedb@2.8.1": {
+      "last_modified": "2026-08-14T15:04:01Z",
+      "resolved": "github:NixOS/nixpkgs/8be7bd0c83f12e2e3bbba07c9044d6fed9e66f7f#spacetimedb",
+      "source": "devbox-search",
+      "version": "2.8.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/icbi2jqh9ddf22l27fhqa6h379x3dzl1-spacetimedb-2.8.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/icbi2jqh9ddf22l27fhqa6h379x3dzl1-spacetimedb-2.8.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/cll0j5wzxarf3zxbjsrcl7z901bj1chx-spacetimedb-2.8.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/cll0j5wzxarf3zxbjsrcl7z901bj1chx-spacetimedb-2.8.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/91hcjzb4yf9w2mrf2zp2b3g1bd6d9r3d-spacetimedb-2.8.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/91hcjzb4yf9w2mrf2zp2b3g1bd6d9r3d-spacetimedb-2.8.1"
+        }
+      }
     }
   }
 }
