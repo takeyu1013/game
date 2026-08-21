@@ -18,6 +18,7 @@
     "lint:text": "textlint \"**/*.md\"",
     "lint:text:fix": "textlint --fix \"**/*.md\"",
     "lint:pr": "textlint --stdin --stdin-filename pr.md",
+    "postinstall": "bun install --cwd tooling/eslint-plugin-functional --frozen-lockfile",
     "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow && bun run build"
   },
   "dependencies": {
@@ -35,7 +36,6 @@
     "@vitejs/plugin-react": "^5.0.4",
     "alchemy": "next",
     "effect": "4.0.0-beta.105",
-    "eslint-plugin-fp": "^2.3.0",
     "fallow": "^3.16.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",

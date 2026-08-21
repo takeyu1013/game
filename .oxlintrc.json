@@ -3,12 +3,12 @@
   "ignorePatterns": ["src/module-bindings"],
   "jsPlugins": [
     { "name": "eslint-js", "specifier": "oxlint-plugin-eslint" },
-    { "name": "fp", "specifier": "eslint-plugin-fp" }
+    { "name": "functional", "specifier": "./tooling/eslint-plugin-functional/index.js" }
   ],
   "rules": {
-    "fp/no-class": "error",
-    "fp/no-loops": "error",
-    "fp/no-throw": "error",
+    "functional/no-classes": "error",
+    "functional/no-loop-statements": "error",
+    "functional/no-throw-statements": "error",
     "typescript/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
     "eslint-js/no-restricted-syntax": [
       "error",
