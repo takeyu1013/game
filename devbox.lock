@@ -53,7 +53,7 @@
       "last_modified": "2026-08-19T20:44:59Z",
       "resolved": "github:NixOS/nixpkgs/07e1d92cdc0ed416cfa11ff3ca40d17e61cfba7a?lastModified=1787172299&narHash=sha256-PShzS87awOlE5XWkxUGBd%2F58%2FF%2BAtE2ZMgFffKj4r8s%3D"
     },
-    "spacetimedb@2.8.1": {
+    "spacetimedb@latest": {
       "last_modified": "2026-08-14T15:04:01Z",
       "resolved": "github:NixOS/nixpkgs/8be7bd0c83f12e2e3bbba07c9044d6fed9e66f7f#spacetimedb",
       "source": "devbox-search",
