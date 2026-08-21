@@ -1,13 +1,20 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { fn, fromNullishOr, runSync, sync } from "effect/Effect";
+import { fromNullishOr as optionFromNullishOr, getOrElse, match } from "effect/Option";
+import { decodeUnknownEffect, String, Struct } from "effect/Schema";
 import { SpacetimeDBProvider, useSpacetimeDB, useTable } from "spacetimedb/react";
 import { GameCanvas } from "./game-canvas";
 import { DbConnection, tables } from "./module-bindings";
 import type { Player } from "./module-bindings/types";
 
-const connectionBuilder = DbConnection.builder()
-  .withUri(import.meta.env.VITE_SPACETIMEDB_URI ?? "ws://localhost:3000")
-  .withDatabaseName(import.meta.env.VITE_SPACETIMEDB_MODULE ?? "takeyu-game");
+const defaultSpacetimeUri = "ws://localhost:3000" as const;
+const defaultSpacetimeModule = "takeyu-game" as const;
+
+const spacetimeEnvSchema = Struct({
+  VITE_SPACETIMEDB_URI: String,
+  VITE_SPACETIMEDB_MODULE: String,
+});
 
 const PresenceView = ({
   identity,
@@ -41,19 +48,40 @@ const PresenceView = ({
 const App = () => {
   const { isActive, identity, connectionError } = useSpacetimeDB();
   const [players, playersReady] = useTable(tables.player);
-  if (connectionError) {
-    return `接続に失敗しました: ${connectionError.message}`;
-  }
-  if (!isActive || !identity) {
-    return "接続中...";
-  }
-  return <PresenceView identity={identity} players={players} ready={playersReady} />;
+  return match(optionFromNullishOr(connectionError), {
+    onSome: (error) => `接続に失敗しました: ${error.message}`,
+    onNone: () =>
+      match(optionFromNullishOr(isActive ? identity : undefined), {
+        onNone: () => "接続中...",
+        onSome: (id) => <PresenceView identity={id} players={players} ready={playersReady} />,
+      }),
+  });
 };
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <SpacetimeDBProvider connectionBuilder={connectionBuilder}>
-      <App />
-    </SpacetimeDBProvider>
-  </StrictMode>,
-);
+const mount = fn("mount")(function* () {
+  const env = yield* decodeUnknownEffect(spacetimeEnvSchema)({
+    VITE_SPACETIMEDB_URI: getOrElse(
+      optionFromNullishOr(import.meta.env.VITE_SPACETIMEDB_URI),
+      () => defaultSpacetimeUri,
+    ),
+    VITE_SPACETIMEDB_MODULE: getOrElse(
+      optionFromNullishOr(import.meta.env.VITE_SPACETIMEDB_MODULE),
+      () => defaultSpacetimeModule,
+    ),
+  });
+  const root = yield* fromNullishOr(document.getElementById("root"));
+  const connectionBuilder = DbConnection.builder()
+    .withUri(env.VITE_SPACETIMEDB_URI)
+    .withDatabaseName(env.VITE_SPACETIMEDB_MODULE);
+  yield* sync(() => {
+    createRoot(root).render(
+      <StrictMode>
+        <SpacetimeDBProvider connectionBuilder={connectionBuilder}>
+          <App />
+        </SpacetimeDBProvider>
+      </StrictMode>,
+    );
+  });
+});
+
+runSync(mount());

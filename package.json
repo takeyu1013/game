@@ -22,6 +22,7 @@
     "ci": "bun run fmt:check && bun run lint && bun run lint:text && fallow && bun run build"
   },
   "dependencies": {
+    "effect": "4.0.0-beta.107",
     "konva": "^10.3.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -35,7 +36,6 @@
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
     "alchemy": "next",
-    "effect": "4.0.0-beta.107",
     "fallow": "^3.17.0",
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0",
