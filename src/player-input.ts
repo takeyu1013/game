@@ -1,5 +1,6 @@
-import { useRef, type KeyboardEvent } from "react";
+import { useRef } from "react";
 import { useReducer } from "spacetimedb/react";
+import { useEventListener, useUnmount } from "usehooks-ts";
 import { reducers } from "./module-bindings";
 
 const KEY_SIDE: Record<string, "left" | "right"> = {
@@ -24,14 +25,13 @@ const released = { left: false, right: false };
 export const usePlayerInput = () => {
   const setInput = useReducer(reducers.setInput);
   const held = useRef(released);
-  const root = useRef<HTMLDivElement>(null);
 
   const send = (next: Held) => {
     held.current = next;
     void setInput(next);
   };
 
-  const onKey = (event: KeyboardEvent<HTMLDivElement>, pressed: boolean) => {
+  const onKey = (event: KeyboardEvent, pressed: boolean) => {
     if (KEY_SIDE[event.code] !== undefined) {
       event.preventDefault();
     }
@@ -41,17 +41,14 @@ export const usePlayerInput = () => {
     }
   };
 
-  return {
-    ref: root,
-    tabIndex: 0,
-    autoFocus: true,
-    onClick: () => root.current?.focus(),
-    onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => onKey(event, true),
-    onKeyUp: (event: KeyboardEvent<HTMLDivElement>) => onKey(event, false),
-    onBlur: () => {
-      if (held.current.left || held.current.right) {
-        send(released);
-      }
-    },
+  const release = () => {
+    if (held.current.left || held.current.right) {
+      send(released);
+    }
   };
+
+  useEventListener("keydown", (event) => onKey(event, true));
+  useEventListener("keyup", (event) => onKey(event, false));
+  useEventListener("blur", release);
+  useUnmount(release);
 };

@@ -37,32 +37,21 @@ export const GameCanvas = ({
   identity: Player["identity"];
   players: readonly Player[];
 }) => {
-  const input = usePlayerInput();
+  usePlayerInput();
   return (
-    <div
-      ref={input.ref}
-      tabIndex={input.tabIndex}
-      autoFocus={input.autoFocus}
-      onClick={input.onClick}
-      onKeyDown={input.onKeyDown}
-      onKeyUp={input.onKeyUp}
-      onBlur={input.onBlur}
-      style={{ outline: "none", width: VIEW_WIDTH }}
-    >
-      <Stage width={VIEW_WIDTH} height={VIEW_HEIGHT} listening={false}>
-        <Layer listening={false}>
-          <Rect width={VIEW_WIDTH} height={VIEW_HEIGHT} fill={SKY_COLOR} />
-          <Rect y={GROUND_Y} width={VIEW_WIDTH} height={GROUND_HEIGHT} fill={GROUND_COLOR} />
-          <Line
-            points={[0, GROUND_Y, VIEW_WIDTH, GROUND_Y]}
-            stroke={GROUND_LINE_COLOR}
-            strokeWidth={2}
-          />
-          {players.map((player) => (
-            <PlayerRect key={player.identity.toHexString()} player={player} self={identity} />
-          ))}
-        </Layer>
-      </Stage>
-    </div>
+    <Stage width={VIEW_WIDTH} height={VIEW_HEIGHT} listening={false}>
+      <Layer listening={false}>
+        <Rect width={VIEW_WIDTH} height={VIEW_HEIGHT} fill={SKY_COLOR} />
+        <Rect y={GROUND_Y} width={VIEW_WIDTH} height={GROUND_HEIGHT} fill={GROUND_COLOR} />
+        <Line
+          points={[0, GROUND_Y, VIEW_WIDTH, GROUND_Y]}
+          stroke={GROUND_LINE_COLOR}
+          strokeWidth={2}
+        />
+        {players.map((player) => (
+          <PlayerRect key={player.identity.toHexString()} player={player} self={identity} />
+        ))}
+      </Layer>
+    </Stage>
   );
 };
