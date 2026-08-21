@@ -1,14 +1,21 @@
 {
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
   "ignorePatterns": ["src/module-bindings"],
-  "jsPlugins": [{ "name": "eslint-js", "specifier": "oxlint-plugin-eslint" }],
+  "jsPlugins": [
+    { "name": "eslint-js", "specifier": "oxlint-plugin-eslint" },
+    { "name": "functional", "specifier": "./tooling/eslint-plugin-functional/index.js" }
+  ],
   "rules": {
-    "max-classes-per-file": ["error", 0],
+    "functional/no-classes": "error",
+    "functional/no-loop-statements": "error",
+    "functional/no-throw-statements": "error",
+    "typescript/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
     "eslint-js/no-restricted-syntax": [
       "error",
-      "ForStatement",
-      "ForInStatement",
-      "ForOfStatement",
-      "ThrowStatement"
+      {
+        "selector": "VariableDeclaration[kind='const'] > VariableDeclarator[init.type=/Literal|ObjectExpression|ArrayExpression/]",
+        "message": "定数にはas constが必要です"
+      }
     ],
     "no-restricted-imports": [
       "error",

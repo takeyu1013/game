@@ -9,11 +9,11 @@ import {
 } from "../spacetimedb/src/layout";
 import type { Player } from "./module-bindings/types";
 
-const SKY_COLOR = "#9ec9e8";
-const GROUND_COLOR = "#6b8f3c";
-const GROUND_LINE_COLOR = "#3f5c22";
-const SELF_COLOR = "#e15b4c";
-const OTHER_COLOR = "#3d5c80";
+const SKY_COLOR = "#9ec9e8" as const;
+const GROUND_COLOR = "#6b8f3c" as const;
+const GROUND_LINE_COLOR = "#3f5c22" as const;
+const SELF_COLOR = "#e15b4c" as const;
+const OTHER_COLOR = "#3d5c80" as const;
 
 const playerColor = (player: Player, self: Player["identity"]) =>
   player.identity.isEqual(self) ? SELF_COLOR : OTHER_COLOR;
