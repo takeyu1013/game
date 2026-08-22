@@ -51,6 +51,10 @@
       {
         "selector": "VariableDeclaration[kind='const'] > VariableDeclarator[init.type=/Literal|ObjectExpression|ArrayExpression/]",
         "message": "定数にはas constが必要です"
+      },
+      {
+        "selector": "VariableDeclarator[id.typeAnnotation]",
+        "message": "変数定義の型アノテーションは禁止です。satisfiesを使ってください"
       }
     ],
     "no-restricted-imports": [
