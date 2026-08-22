@@ -17,6 +17,9 @@ const SIDES = {
   KeyA: "left",
   ArrowRight: "right",
   KeyD: "right",
+  ArrowUp: "jump",
+  KeyW: "jump",
+  Space: "jump",
 } as const;
 
 const keyCode = Literals([
@@ -24,11 +27,15 @@ const keyCode = Literals([
   "KeyA",
   "ArrowRight",
   "KeyD",
+  "ArrowUp",
+  "KeyW",
+  "Space",
 ] as const satisfies ReadonlyArray<keyof typeof SIDES>);
 
 type Held = {
   readonly left: boolean;
   readonly right: boolean;
+  readonly jump: boolean;
 };
 
 const listen = (type: string) =>
@@ -56,13 +63,17 @@ const keySide = fromPredicateOption((event: Event) =>
 );
 
 const listenPlayerInput = fn("listenPlayerInput")(function* (setInput: (held: Held) => unknown) {
-  const held = yield* make<Held>({ left: false, right: false });
+  const held = yield* make<Held>({ left: false, right: false, jump: false });
   yield* runForEach(
     mergeAll(
       [
         filterMap(listen("keydown"), keySide),
         filterMap(listen("keyup"), keySide),
-        mapStream(listen("blur"), (): Partial<Held> => ({ left: false, right: false })),
+        mapStream(listen("blur"), (): Partial<Held> => ({
+          left: false,
+          right: false,
+          jump: false,
+        })),
       ],
       { concurrency: "unbounded" },
     ),
