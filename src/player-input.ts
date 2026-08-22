@@ -19,7 +19,12 @@ const SIDES = {
   KeyD: "right",
 } as const;
 
-const KeyCode = Literals(["ArrowLeft", "KeyA", "ArrowRight", "KeyD"]);
+const keyCode = Literals([
+  "ArrowLeft",
+  "KeyA",
+  "ArrowRight",
+  "KeyD",
+] as const satisfies ReadonlyArray<keyof typeof SIDES>);
 
 type Held = {
   readonly left: boolean;
@@ -43,7 +48,7 @@ const keySide = fromPredicateOption((event: Event) =>
   flatMap(
     filter(decodeUnknownOption(instanceOf(KeyboardEvent))(event), (key) => !key.repeat),
     (key) =>
-      map(decodeUnknownOption(KeyCode)(key.code), (code): Partial<Held> => {
+      map(decodeUnknownOption(keyCode)(key.code), (code): Partial<Held> => {
         key.preventDefault();
         return { [SIDES[code]]: key.type === "keydown" };
       }),
