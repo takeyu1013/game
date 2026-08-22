@@ -31,6 +31,9 @@ const clampX = (x: number) => Math.min(Math.max(x, MIN_X), MAX_X);
 export const nextX = (x: number, left: boolean, right: boolean) =>
   clampX(x + moveDirection(left, right) * MOVE_SPEED * TICK_DT);
 
+export const applyJump = (y: number, vy: number, jump: boolean) =>
+  isGrounded(y) && jump ? -JUMP_SPEED : vy;
+
 export const nextVertical = (y: number, vy: number, jump: boolean) => {
   const nextVy = isGrounded(y) && jump ? -JUMP_SPEED : vy + GRAVITY * TICK_DT;
   const nextY = y + nextVy * TICK_DT;

@@ -1,5 +1,12 @@
 import { ScheduleAt, schema, t, table } from "spacetimedb/server";
-import { nextSpawnX, nextVertical, nextX, SPAWN_Y, TICK_INTERVAL_MICROS } from "./layout";
+import {
+  applyJump,
+  nextSpawnX,
+  nextVertical,
+  nextX,
+  SPAWN_Y,
+  TICK_INTERVAL_MICROS,
+} from "./layout";
 
 const player = table(
   { name: "player", public: true },
@@ -75,10 +82,14 @@ export const setInput = spacetimedb.reducer(
   { left: t.bool(), right: t.bool(), jump: t.bool() },
   (ctx, { left, right, jump }) => {
     const row = ctx.db.player.identity.find(ctx.sender);
-    if (row === null || sameInput(row, left, right, jump)) {
+    if (row === null) {
       return;
     }
-    ctx.db.player.identity.update({ ...row, left, right, jump });
+    const vy = applyJump(row.y, row.vy, jump);
+    if (sameInput(row, left, right, jump) && vy === row.vy) {
+      return;
+    }
+    ctx.db.player.identity.update({ ...row, left, right, jump, vy });
   },
 );
 

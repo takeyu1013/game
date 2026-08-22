@@ -1,6 +1,13 @@
 import { log } from "effect/Console";
 import { fail, fn, forEach, runSync } from "effect/Effect";
-import { PLAYER_WIDTH, SPAWN_Y, VIEW_WIDTH, nextVertical, nextX } from "../spacetimedb/src/layout";
+import {
+  PLAYER_WIDTH,
+  SPAWN_Y,
+  VIEW_WIDTH,
+  applyJump,
+  nextVertical,
+  nextX,
+} from "../spacetimedb/src/layout";
 
 const MIN_X = 0 as const;
 const MAX_X = VIEW_WIDTH - PLAYER_WIDTH;
@@ -23,6 +30,12 @@ const verticalCases = [
   { name: "空中でジャンプ無効", y: 330, vy: -480, jump: true, expectedY: 309, expectedVy: -420 },
   { name: "着地", y: 350, vy: 200, jump: false, expectedY: SPAWN_Y, expectedVy: 0 },
   { name: "空中で落下開始", y: 300, vy: 0, jump: false, expectedY: 303, expectedVy: 60 },
+] as const;
+
+const jumpCases = [
+  { name: "接地でジャンプ入力", y: SPAWN_Y, vy: 0, jump: true, expected: -480 },
+  { name: "空中でジャンプ入力", y: 300, vy: -100, jump: true, expected: -100 },
+  { name: "接地でジャンプ解除", y: SPAWN_Y, vy: -480, jump: false, expected: -480 },
 ] as const;
 
 const expectNextX = fn("expectNextX")(function* (row: (typeof cases)[number]) {
@@ -54,9 +67,18 @@ const expectAirInertia = fn("expectAirInertia")(function* () {
   return yield* fail(`空中で右: ${x},${vertical.y},${vertical.vy} !== 112,303,60`);
 });
 
+const expectApplyJump = fn("expectApplyJump")(function* (row: (typeof jumpCases)[number]) {
+  const actual = applyJump(row.y, row.vy, row.jump);
+  if (actual === row.expected) {
+    return;
+  }
+  return yield* fail(`${row.name}: ${actual} !== ${row.expected}`);
+});
+
 const runLayoutTests = fn("runLayoutTests")(function* () {
   yield* forEach(cases, expectNextX, { discard: true });
   yield* forEach(verticalCases, expectNextVertical, { discard: true });
+  yield* forEach(jumpCases, expectApplyJump, { discard: true });
   yield* expectAirInertia();
   yield* log("layout tests ok");
 });
