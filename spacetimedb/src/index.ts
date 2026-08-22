@@ -1,5 +1,12 @@
 import { ScheduleAt, schema, t, table } from "spacetimedb/server";
-import { nextSpawnX, nextX, SPAWN_Y, TICK_INTERVAL_MICROS } from "./layout";
+import {
+  applyJump,
+  nextSpawnX,
+  nextVertical,
+  nextX,
+  SPAWN_Y,
+  TICK_INTERVAL_MICROS,
+} from "./layout";
 
 const player = table(
   { name: "player", public: true },
@@ -7,8 +14,10 @@ const player = table(
     identity: t.identity().primaryKey(),
     x: t.f32(),
     y: t.f32(),
+    vy: t.f32(),
     left: t.bool(),
     right: t.bool(),
+    jump: t.bool(),
   },
 );
 
@@ -51,8 +60,10 @@ export const connected = spacetimedb.clientConnected((ctx) => {
     identity: ctx.sender,
     x: nextSpawnX(ctx.db.player),
     y: SPAWN_Y,
+    vy: 0,
     left: false,
     right: false,
+    jump: false,
   });
 });
 
@@ -60,17 +71,25 @@ export const disconnected = spacetimedb.clientDisconnected((ctx) => {
   ctx.db.player.identity.delete(ctx.sender);
 });
 
+const sameInput = (
+  row: { left: boolean; right: boolean; jump: boolean },
+  left: boolean,
+  right: boolean,
+  jump: boolean,
+) => row.left === left && row.right === right && row.jump === jump;
+
 export const setInput = spacetimedb.reducer(
-  { left: t.bool(), right: t.bool() },
-  (ctx, { left, right }) => {
+  { left: t.bool(), right: t.bool(), jump: t.bool() },
+  (ctx, { left, right, jump }) => {
     const row = ctx.db.player.identity.find(ctx.sender);
     if (row === null) {
       return;
     }
-    if (row.left === left && row.right === right) {
+    const vy = applyJump(row.y, row.vy, jump);
+    if (sameInput(row, left, right, jump) && vy === row.vy) {
       return;
     }
-    ctx.db.player.identity.update({ ...row, left, right });
+    ctx.db.player.identity.update({ ...row, left, right, jump, vy });
   },
 );
 
@@ -80,10 +99,11 @@ export const tick = spacetimedb.reducer(
   (ctx) => {
     [...ctx.db.player].forEach((row) => {
       const x = nextX(row.x, row.left, row.right);
-      if (x === row.x) {
+      const { y, vy } = nextVertical(row.y, row.vy, row.jump);
+      if (x === row.x && y === row.y && vy === row.vy) {
         return;
       }
-      ctx.db.player.identity.update({ ...row, x });
+      ctx.db.player.identity.update({ ...row, x, y, vy });
     });
   },
 );
