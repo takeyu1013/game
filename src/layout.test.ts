@@ -1,5 +1,5 @@
-import { log } from "effect/Console";
-import { fail, fn, forEach, runSync } from "effect/Effect";
+import { describe, it } from "@effect/vitest";
+import { fail, fn } from "effect/Effect";
 import { PLAYER_WIDTH, VIEW_WIDTH, nextX } from "../spacetimedb/src/layout";
 
 const MIN_X = 0 as const;
@@ -24,9 +24,6 @@ const expectNextX = fn("expectNextX")(function* (row: (typeof cases)[number]) {
   return yield* fail(`${row.name}: ${actual} !== ${row.expected}`);
 });
 
-const runLayoutTests = fn("runLayoutTests")(function* () {
-  yield* forEach(cases, expectNextX, { discard: true });
-  yield* log("layout tests ok");
+describe("nextX", () => {
+  it.effect.each(cases)("$name", (row) => expectNextX(row));
 });
-
-runSync(runLayoutTests());
