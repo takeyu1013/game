@@ -1,7 +1,7 @@
 import { fn, runFork, sync, tap } from "effect/Effect";
 import { interrupt } from "effect/Fiber";
 import { fromPredicateOption } from "effect/Filter";
-import { filter, flatMap, map } from "effect/Option";
+import { filter, flatMap, map, orElse } from "effect/Option";
 import { make, updateAndGet } from "effect/Ref";
 import { decodeUnknownOption, instanceOf, Literals } from "effect/Schema";
 import {
@@ -22,6 +22,19 @@ const SIDES = {
   Space: "jump",
 } as const;
 
+const KEY_NAMES = {
+  ArrowLeft: "left",
+  a: "left",
+  A: "left",
+  ArrowRight: "right",
+  d: "right",
+  D: "right",
+  ArrowUp: "jump",
+  w: "jump",
+  W: "jump",
+  " ": "jump",
+} as const;
+
 const keyCode = Literals([
   "ArrowLeft",
   "KeyA",
@@ -31,6 +44,19 @@ const keyCode = Literals([
   "KeyW",
   "Space",
 ] as const satisfies ReadonlyArray<keyof typeof SIDES>);
+
+const keyName = Literals([
+  "ArrowLeft",
+  "a",
+  "A",
+  "ArrowRight",
+  "d",
+  "D",
+  "ArrowUp",
+  "w",
+  "W",
+  " ",
+] as const satisfies ReadonlyArray<keyof typeof KEY_NAMES>);
 
 type Held = {
   readonly left: boolean;
@@ -49,15 +75,22 @@ const listen = (type: string) =>
       },
     },
     type,
+    { capture: true },
+  );
+
+const sideOf = (key: KeyboardEvent) =>
+  orElse(
+    map(decodeUnknownOption(keyCode)(key.code), (code) => SIDES[code]),
+    () => map(decodeUnknownOption(keyName)(key.key), (name) => KEY_NAMES[name]),
   );
 
 const keySide = fromPredicateOption((event: Event) =>
   flatMap(
     filter(decodeUnknownOption(instanceOf(KeyboardEvent))(event), (key) => !key.repeat),
     (key) =>
-      map(decodeUnknownOption(keyCode)(key.code), (code): Partial<Held> => {
+      map(sideOf(key), (side): Partial<Held> => {
         key.preventDefault();
-        return { [SIDES[code]]: key.type === "keydown" };
+        return { [side]: key.type === "keydown" };
       }),
   ),
 );
