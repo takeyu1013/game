@@ -1,5 +1,5 @@
-import { log } from "effect/Console";
-import { fail, fn, forEach, runSync } from "effect/Effect";
+import { describe, it } from "@effect/vitest";
+import { fail, fn } from "effect/Effect";
 import {
   PLAYER_WIDTH,
   SPAWN_Y,
@@ -58,6 +58,14 @@ const expectNextVertical = fn("expectNextVertical")(function* (
   );
 });
 
+const expectApplyJump = fn("expectApplyJump")(function* (row: (typeof jumpCases)[number]) {
+  const actual = applyJump(row.y, row.vy, row.jump);
+  if (actual === row.expected) {
+    return;
+  }
+  return yield* fail(`${row.name}: ${actual} !== ${row.expected}`);
+});
+
 const expectAirInertia = fn("expectAirInertia")(function* () {
   const x = nextX(100, false, true);
   const vertical = nextVertical(300, 0, false);
@@ -67,20 +75,18 @@ const expectAirInertia = fn("expectAirInertia")(function* () {
   return yield* fail(`空中で右: ${x},${vertical.y},${vertical.vy} !== 112,303,60`);
 });
 
-const expectApplyJump = fn("expectApplyJump")(function* (row: (typeof jumpCases)[number]) {
-  const actual = applyJump(row.y, row.vy, row.jump);
-  if (actual === row.expected) {
-    return;
-  }
-  return yield* fail(`${row.name}: ${actual} !== ${row.expected}`);
+describe("nextX", () => {
+  it.effect.each(cases)("$name", (row) => expectNextX(row));
 });
 
-const runLayoutTests = fn("runLayoutTests")(function* () {
-  yield* forEach(cases, expectNextX, { discard: true });
-  yield* forEach(verticalCases, expectNextVertical, { discard: true });
-  yield* forEach(jumpCases, expectApplyJump, { discard: true });
-  yield* expectAirInertia();
-  yield* log("layout tests ok");
+describe("nextVertical", () => {
+  it.effect.each(verticalCases)("$name", (row) => expectNextVertical(row));
 });
 
-runSync(runLayoutTests());
+describe("applyJump", () => {
+  it.effect.each(jumpCases)("$name", (row) => expectApplyJump(row));
+});
+
+describe("空中慣性", () => {
+  it.effect("空中で右", () => expectAirInertia());
+});
