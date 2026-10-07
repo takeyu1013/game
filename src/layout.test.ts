@@ -1,5 +1,5 @@
-import { fail, fn, runSync } from "effect/Effect";
-import { describe, it } from "vitest";
+import { describe, it } from "@effect/vitest";
+import { fail, fn } from "effect/Effect";
 import { PLAYER_WIDTH, VIEW_WIDTH, nextX } from "../spacetimedb/src/layout";
 
 const MIN_X = 0 as const;
@@ -25,7 +25,5 @@ const expectNextX = fn("expectNextX")(function* (row: (typeof cases)[number]) {
 });
 
 describe("nextX", () => {
-  it.each(cases)("$name", (row) => {
-    runSync(expectNextX(row));
-  });
+  it.effect.each(cases)("$name", (row) => expectNextX(row));
 });

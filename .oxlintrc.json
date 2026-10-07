@@ -1,8 +1,15 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "ignorePatterns": ["src/module-bindings"],
-  "jsPlugins": [{ "name": "eslint-js", "specifier": "oxlint-plugin-eslint" }],
+  "jsPlugins": [
+    { "name": "eslint-js", "specifier": "oxlint-plugin-eslint" },
+    { "name": "functional", "specifier": "./tooling/eslint-plugin-functional/index.js" }
+  ],
   "rules": {
+    "functional/no-classes": "error",
+    "functional/no-loop-statements": "error",
+    "functional/no-throw-statements": "error",
+    "functional/no-try-statements": "error",
     "oxc/no-async-await": "error",
     "no-restricted-globals": [
       "error",

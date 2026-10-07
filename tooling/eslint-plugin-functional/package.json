@@ -1,0 +1,9 @@
+{
+  "name": "eslint-plugin-functional-install",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "eslint-plugin-functional": "10.0.0",
+    "typescript": "5.9.3"
+  }
+}
