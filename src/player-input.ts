@@ -64,34 +64,48 @@ type Held = {
   readonly jump: boolean;
 };
 
-const listen = (type: string) =>
-  fromEventListener<Event>(
-    {
-      addEventListener: (event, f, options) => {
-        window.addEventListener(event, f, options);
-      },
-      removeEventListener: (event, f, options) => {
-        window.removeEventListener(event, f, options);
-      },
-    },
-    type,
-    { capture: true },
-  );
-
 const sideOf = (key: KeyboardEvent) =>
   orElse(
     map(decodeUnknownOption(keyCode)(key.code), (code) => SIDES[code]),
     () => map(decodeUnknownOption(keyName)(key.key), (name) => KEY_NAMES[name]),
   );
 
+const preventGameKey = (event: Event) =>
+  flatMap(decodeUnknownOption(instanceOf(KeyboardEvent))(event), (key) =>
+    map(sideOf(key), () => {
+      key.preventDefault();
+    }),
+  );
+
+const wraps = new WeakMap<(event: Event) => void, (event: Event) => void>();
+
+const listen = (type: string) =>
+  fromEventListener<Event>(
+    {
+      addEventListener: (event, f, options) => {
+        const wrapped = (ev: Event) => {
+          preventGameKey(ev);
+          f(ev);
+        };
+        wraps.set(f, wrapped);
+        window.addEventListener(event, wrapped, options);
+      },
+      removeEventListener: (event, f, options) => {
+        const wrapped = wraps.get(f);
+        if (wrapped === undefined) {
+          return;
+        }
+        window.removeEventListener(event, wrapped, options);
+      },
+    },
+    type,
+    { capture: true },
+  );
+
 const keySide = fromPredicateOption((event: Event) =>
   flatMap(
     filter(decodeUnknownOption(instanceOf(KeyboardEvent))(event), (key) => !key.repeat),
-    (key) =>
-      map(sideOf(key), (side): Partial<Held> => {
-        key.preventDefault();
-        return { [side]: key.type === "keydown" };
-      }),
+    (key) => map(sideOf(key), (side): Partial<Held> => ({ [side]: key.type === "keydown" })),
   ),
 );
 
