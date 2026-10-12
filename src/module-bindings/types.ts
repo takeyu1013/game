@@ -14,8 +14,10 @@ export const Player = __t.object("Player", {
   identity: __t.identity(),
   x: __t.f32(),
   y: __t.f32(),
+  vy: __t.f32(),
   left: __t.bool(),
   right: __t.bool(),
+  jump: __t.bool(),
 });
 export type Player = __Infer<typeof Player>;
 

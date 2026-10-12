@@ -14,6 +14,8 @@ export default __t.row({
   identity: __t.identity().primaryKey(),
   x: __t.f32(),
   y: __t.f32(),
+  vy: __t.f32(),
   left: __t.bool(),
   right: __t.bool(),
+  jump: __t.bool(),
 });

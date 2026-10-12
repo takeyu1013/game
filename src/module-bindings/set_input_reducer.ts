@@ -13,4 +13,5 @@ import {
 export default {
   left: __t.bool(),
   right: __t.bool(),
+  jump: __t.bool(),
 };
